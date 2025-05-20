@@ -2,138 +2,238 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transport Cyber Threats</title>
+  <title>Cyber Attack Visual Scenarios</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
+      background-color: #f8f9fa;
       margin: 0;
-      background-color: #f4f6f8;
-      padding: 20px;
+      padding: 0;
     }
-    h1 {
+
+    header {
+      background-color: #2c3e50;
+      padding: 10px 0;
       text-align: center;
-      color: #2c3e50;
+      color: white;
     }
-    .tab-container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-    }
-    .tabs {
+
+    nav {
       display: flex;
-      flex-wrap: wrap;
-      background: #3498db;
+      justify-content: center;
+      background-color: #34495e;
     }
-    .tabs button {
-      flex: 1;
-      background: #3498db;
-      color: #fff;
-      padding: 15px;
+
+    nav button {
+      background: none;
       border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s;
     }
-    .tabs button:hover,
-    .tabs button.active {
-      background: #2980b9;
+
+    nav button:hover,
+    nav button.active {
+      background-color: #2980b9;
     }
-    .tab-content {
-      display: none;
+
+    .container {
       padding: 20px;
-      animation: fadeIn 0.5s ease-in-out;
     }
-    .tab-content.active {
+
+    h2 {
+      margin-top: 20px;
+      color: #34495e;
+    }
+
+    .attack-schema {
+      display: none;
+      margin-top: 15px;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      flex-direction: row;
+    }
+
+    .schema-step {
+      text-align: center;
+      display: none;
+      min-width: 100px;
+    }
+
+    .schema-step img {
+      width: 80px;
+      height: auto;
       display: block;
+      margin: 0 auto 5px;
     }
+
+    .arrow {
+      font-size: 24px;
+      display: none;
+      align-self: center;
+      user-select: none;
+    }
+
+    .result {
+      font-size: 20px;
+      color: red;
+      display: none;
+      min-width: 140px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .typing {
+      display: inline-block;
+      border-right: 2px solid #333;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 2s steps(30, end), blink 0.7s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    .strike-replace {
+      position: relative;
+      color: #777;
+      font-family: monospace;
+    }
+
+    .strike-replace::after {
+      content: attr(data-replace);
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: red;
+      animation: fadeIn 1s ease-in-out 1.5s forwards;
+      opacity: 0;
+    }
+
+    .strike-replace.strike::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background: red;
+      transform: rotate(-5deg);
+    }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .attack-demo {
-      background: #ecf0f1;
-      padding: 15px;
-      border-left: 4px solid #e74c3c;
-      margin-top: 10px;
-      font-style: italic;
-    }
-    footer {
-      margin-top: 30px;
-      font-size: 14px;
-      color: #555;
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <h1>Cyber Threats to Transport Companies</h1>
-  <div class="tab-container">
-    <div class="tabs">
-      <button class="tab-link active" onclick="openTab(event, 'false-data')">False Data Injection</button>
-      <button class="tab-link" onclick="openTab(event, 'replay')">Replay Attack</button>
-      <button class="tab-link" onclick="openTab(event, 'mima')">Man-in-the-Middle</button>
-      <button class="tab-link" onclick="openTab(event, 'sybil')">Sybil Attack</button>
-      <button class="tab-link" onclick="openTab(event, 'phishing')">Phishing</button>
-      <button class="tab-link" onclick="openTab(event, 'scripts')">Malicious Scripts</button>
+  <header>
+    <h1>Cyber Attack Visual Scenarios</h1>
+  </header>
+
+  <nav>
+    <button onclick="runAttack('gps')" class="active">GPS Spoofing</button>
+    <button onclick="runAttack('phishing')">QR Phishing</button>
+    <button onclick="runAttack('sybil')">Sybil Attack</button>
+    <button onclick="runAttack('fdi')">False Data Injection</button>
+  </nav>
+
+  <div class="container">
+
+    <!-- GPS Spoofing -->
+    <div id="gps-schema" class="attack-schema">
+      <div class="schema-step"><img src="gps-hacker.png" alt="Hacker"><div>Attacker</div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="satellite.png" alt="Satellite"><div>Intercepted Satellite Signal</div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step">
+        <div>
+          <span class="strike-replace strike" data-replace="Injected: 51.5074, -0.1278">Original: 34.0522, -118.2437</span>
+        </div>
+      </div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="ship-plane.png" alt="Ship or Plane"><div>Vehicle Receives <br><b>Fake GPS Signal</b></div></div>
+      <div class="arrow">➡️</div>
+      <div class="result">❗ Diverted Course</div>
     </div>
 
-    <div id="false-data" class="tab-content active">
-      <h2>False Data Injection</h2>
-      <p>Зловмисник впроваджує неправдиві повідомлення (наприклад, хибна аварія або злива), щоб змусити інші транспортні засоби змінити маршрут.</p>
-      <div class="attack-demo">У 2023 році в США ІІ використовувався для створення неправдивих попереджень про ДТП, що спричинило масові затори.</div>
+    <!-- QR Phishing -->
+    <div id="phishing-schema" class="attack-schema">
+      <div class="schema-step"><img src="qr-sticker.png" alt="QR Code"><div>Malicious QR Code</div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="phone-scan.png" alt="Phone Scan"><div>User Scans the Code</div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="fake-website.png" alt="Fake Site"><div class="typing">Redirecting to: login.bánk.com...</div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step">
+        <div><span class="strike-replace strike" data-replace="Entered: ID12345678, John Doe, pass123">Typing: Name, ID, Password</span></div>
+      </div>
+      <div class="arrow">➡️</div>
+      <div class="result">❗ Credentials Stolen</div>
     </div>
 
-    <div id="replay" class="tab-content">
-      <h2>Replay Attack</h2>
-      <p>Злодій записує справжнє повідомлення (наприклад, команда зеленого світла) і повторно його транслює, щоб викликати хаос у русі.</p>
-      <div class="attack-demo">У 2022 році в ЄС зловмисники транслювали старі сигнали світлофорів, що спричинило аварії.</div>
+    <!-- Sybil Attack -->
+    <div id="sybil-schema" class="attack-schema">
+      <div class="schema-step"><img src="sybil-hacker.png" alt="Hacker"><div>Attacker</div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="multiple-cars.png" alt="Fake Cars"><div>Fake Identities as Vehicles</div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="traffic-map.png" alt="Traffic Map"><div>System Believes<br><b>Traffic Congestion</b></div></div>
+      <div class="arrow">➡️</div>
+      <div class="result">❗ Route Rerouted</div>
     </div>
 
-    <div id="mima" class="tab-content">
-      <h2>Man-in-the-Middle (MIMA)</h2>
-      <p>Хакер вклинюється між двома вузлами (наприклад, автобус та сервер), змінюючи або читаючи повідомлення.</p>
-      <div class="attack-demo">У 2023 році в США автономні авто отримували змінені інструкції маршруту, що відхиляло їх від курсу.</div>
+    <!-- False Data Injection -->
+    <div id="fdi-schema" class="attack-schema">
+      <div class="schema-step"><img src="ai-system.png" alt="Fake Alert"><div><span class="strike-replace strike" data-replace="🚧 Obstacle Ahead!">✅ Clear Road</span></div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="v2x.png" alt="V2X"><div>Injected into<br><b>V2X Network</b></div></div>
+      <div class="arrow">➡️</div>
+      <div class="schema-step"><img src="car-reaction.png" alt="Car React"><div>Vehicle Makes<br><b>Unjustified Maneuver</b></div></div>
+      <div class="arrow">➡️</div>
+      <div class="result">❗ Unsafe Rerouting</div>
     </div>
 
-    <div id="sybil" class="tab-content">
-      <h2>Sybil Attack</h2>
-      <p>Один зловмисник видає себе за десятки транспортних одиниць, змінюючи навантаження на систему.</p>
-      <div class="attack-demo">У 2022 році в міському транспорті зловмисник симулював флот автобусів, спотворивши планування маршрутів.</div>
-    </div>
-
-    <div id="phishing" class="tab-content">
-      <h2>Phishing Attack</h2>
-      <p>Користувачам надсилаються фальшиві повідомлення, щоб викрасти їхні особисті дані (наприклад, дані акаунтів доставки).</p>
-      <div class="attack-demo">У 2025 році витік у M&S призвів до хвилі фішингових атак на клієнтів сервісу доставки.</div>
-    </div>
-
-    <div id="scripts" class="tab-content">
-      <h2>Malicious Scripts</h2>
-      <p>Сторонні скрипти впроваджуються у вебсайти чи мобільні застосунки транспортних сервісів для збору або змінення даних.</p>
-      <div class="attack-demo">У 2023 році в електронних сервісах продажу квитків знайдено скрипти, які крали дані платіжних карт.</div>
-    </div>
   </div>
 
-  <footer>
-    <h3>Sources</h3>
-    <ul>
-      <li><a href="https://www.nist.gov/news-events/news/2024/01/nist-identifies-types-cyberattacks-manipulate-behavior-ai-systems" target="_blank">NIST: AI Manipulation Attacks</a></li>
-      <li><a href="https://www.reuters.com/world/us/malicious-actors-using-ai-pose-senior-us-officials-fbi-says-2025-05-15/" target="_blank">Reuters: AI-generated Data Injection</a></li>
-      <li><a href="https://www.thesun.ie/money/15235914/marks-spencer-major-update-cyber-attack-shoppers/" target="_blank">The Sun: M&S Cyberattack</a></li>
-    </ul>
-  </footer>
-
   <script>
-    function openTab(evt, tabId) {
-      const contents = document.querySelectorAll('.tab-content');
-      const links = document.querySelectorAll('.tab-link');
-      contents.forEach(c => c.classList.remove('active'));
-      links.forEach(l => l.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      evt.currentTarget.classList.add('active');
+    function runAttack(type) {
+      // Update nav button states
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('nav button')).find(btn => btn.textContent.toLowerCase().includes(type));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Hide all
+      document.querySelectorAll('.attack-schema').forEach(el => {
+        el.style.display = 'none';
+        el.querySelectorAll('.schema-step, .arrow, .result').forEach(child => {
+          child.style.display = 'none';
+        });
+      });
+
+      // Show selected with animation
+      const schema = document.getElementById(`${type}-schema`);
+      if (!schema) return;
+      schema.style.display = 'flex';
+
+      const steps = schema.querySelectorAll('.schema-step, .arrow, .result');
+      steps.forEach((step, i) => {
+        setTimeout(() => {
+          step.style.display = 'block';
+        }, 400 * i);
+      });
     }
+
+    // Initial load
+    runAttack('gps');
   </script>
 </body>
 </html>
