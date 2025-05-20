@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cybersecurity Dashboard</title>
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    h2 {
+      color: #2c3e50;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      margin: 20px;
+    }
+
+    #timeline {
+      height: 500px;
+      margin: 20px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    #timeline-info {
+      margin: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border: 1px solid #e1e4e8;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Cybersecurity Timeline</h2>
+  <div id="timeline"></div>
+  <div id="timeline-info"><em>Select an item to see details...</em></div>
+
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="https://unpkg.com/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+
+  <script>
+    // Define groups (rows)
+    const groups = new vis.DataSet([
+    { id: "org", content: "Organizations" },
+    { id: "eu", content: "EU Regulations" },
+    { id: "intl", content: "Other Regulations and Standards" }
+    ]);
+
+
+    // Define timeline items
+    const items = new vis.DataSet([
+      {
+        id: 1,
+        group: "eu",
+        content: "NIS2 Directive",
+        start: "2024-01-01",
+        description: `
+          <strong>Effective Date:</strong> January 1, 2024<br>
+          <strong>Overview:</strong> Modernized version of the original NIS Directive.<br>
+          <strong>Sectors:</strong> Energy, transport, banking, healthcare, water, space, digital infrastructure, public administration.<br>
+          <strong>Purpose:</strong> Prevent cyberattacks, improve incident response, and enforce high cybersecurity standards.<br>
+          <strong>Key Provisions:</strong>
+          <ul>
+            <li>Mandatory risk management and incident reporting.</li>
+            <li>Incident notification: 24h initial, 72h final report.</li>
+            <li>Harmonized supervision and heavy penalties for non-compliance.</li>
+          </ul>
+        `
+      },
+      {
+        id: 2,
+        group: "org",
+        content: "ENISA (EU Agency)",
+        start: "2004-10-01",
+        description: `
+          <strong>Established:</strong> October 2004<br>
+          <strong>Type:</strong> EU Agency for Cybersecurity<br>
+          <strong>Purpose:</strong> Coordinate EU-wide cybersecurity strategies.<br>
+          <strong>Activities:</strong>
+          <ul>
+            <li>Supports national CSIRTs.</li>
+            <li>Runs Cyber Europe exercises.</li>
+            <li>Guides policy and certification frameworks.</li>
+          </ul>
+        `
+      },
+      {
+        id: 3,
+        group: "eu",
+        content: "GDPR",
+        start: "2018-05-25",
+        description: `
+          <strong>Effective Date:</strong> May 25, 2018<br>
+          <strong>Sectors:</strong> All entities processing personal data of EU citizens.<br>
+          <strong>Purpose:</strong> Prevent misuse/loss of personal data.<br>
+          <strong>Key Points:</strong>
+          <ul>
+            <li>Mandatory breach notifications (72h).</li>
+            <li>Requires security controls (encryption, access restriction).</li>
+            <li>Introduces fines up to €20M or 4% global turnover.</li>
+          </ul>
+        `
+      },
+      {
+        id: 4,
+        group: "eu",
+        content: "Cybersecurity Act",
+        start: "2019-06-27",
+        description: `
+          <strong>Effective Date:</strong> June 27, 2019<br>
+          <strong>Sectors:</strong> ICT products, services, and processes.<br>
+          <strong>Purpose:</strong> Increase trust through cybersecurity certification.<br>
+          <strong>Main Components:</strong>
+          <ul>
+            <li>EU-wide cybersecurity certification framework.</li>
+            <li>Levels: Basic, Substantial, High.</li>
+            <li>ENISA manages certification schemes.</li>
+          </ul>
+        `
+      },
+      {
+        id: 5,
+        group: "intl",
+        content: "ISO/IEC 27001:2013",
+        start: "2013-10-01",
+        description: `
+          <strong>Published:</strong> October 2013<br>
+          <strong>Sectors:</strong> Cross-sector, enterprise-wide.<br>
+          <strong>Purpose:</strong> Manage and reduce information security risks.<br>
+          <strong>Details:</strong>
+          <ul>
+            <li>Standard for Information Security Management Systems (ISMS).</li>
+            <li>Focuses on risk-based control design.</li>
+          </ul>
+        `
+      },
+      {
+        id: 6,
+        group: "intl",
+        content: "CIS Benchmarks",
+        start: "2000-01-01",
+        description: `
+          <strong>Launch Year:</strong> 2000<br>
+          <strong>Sectors:</strong> IT, cloud, enterprise infrastructure.<br>
+          <strong>Purpose:</strong> Prevent misconfigurations and harden systems.<br>
+          <strong>Key Features:</strong>
+          <ul>
+            <li>Prescriptive configuration guidance (Windows, Linux, AWS, etc.).</li>
+            <li>Supports compliance and auditing.</li>
+          </ul>
+        `
+      },
+      {
+        id: 7,
+        group: "intl",
+        content: "ETSI EN 303 645",
+        start: "2020-06-01",
+        description: `
+          <strong>Published:</strong> June 2020<br>
+          <strong>Sectors:</strong> Consumer IoT — smart TVs, wearables, routers, toys.<br>
+          <strong>Purpose:</strong> Prevent insecure default settings and software vulnerabilities.<br>
+          <strong>Highlights:</strong>
+          <ul>
+            <li>No default passwords.</li>
+            <li>Mandatory software update mechanisms.</li>
+            <li>Data protection principles.</li>
+          </ul>
+        `
+      },
+      {
+        id: 8,
+        group: "org",
+        content: "ETSI (Organization)",
+        start: "1988-03-01",
+        description: `
+          <strong>Established:</strong> March 1988<br>
+          <strong>Type:</strong> Standards Development Organization (SDO)<br>
+          <strong>Scope:</strong> Telecom, IoT, 5G, broadcast, cybersecurity.<br>
+          <strong>Purpose:</strong> Define interoperable, secure ICT standards.<br>
+          <strong>Influence:</strong> Basis for many EU-level and global cybersecurity standards.
+        `
+      },
+      {
+  id: 9,
+  group: "eu",
+  content: "NIS Directive (2016)",
+  start: "2016-07-06",
+  description: `
+    <strong>Effective Date:</strong> July 6, 2016<br>
+    <strong>Overview:</strong> The first EU-wide directive setting baseline cybersecurity requirements for critical infrastructure.<br>
+    <strong>Affected Sectors:</strong> Energy, Transport, Banking, Finance, Healthcare, Water Supply, Digital Infrastructure.<br>
+    <strong>Prevention Goals:</strong> Enhance cybersecurity resilience, ensure rapid incident response, and facilitate cross-border information sharing.<br>
+    <strong>Key Points:</strong>
+    <ul>
+      <li>Mandates risk management practices and incident notification.</li>
+      <li>Establishes a network of national CSIRTs.</li>
+      <li>Improves cooperation between member states.</li>
+    </ul>
+  `
+},
+{
+  id: 10,
+  group: "org",
+  content: "CSIRT Network",
+  start: "2017-01-01",
+  description: `
+    <strong>Established:</strong> 2017<br>
+    <strong>Role:</strong> Network of national Cyber Security Incident Response Teams (CSIRTs) across the EU.<br>
+    <strong>Functions:</strong>
+    <ul>
+      <li>Real-time monitoring, detection, and response to cybersecurity incidents.</li>
+      <li>Coordination of cross-border incident handling and investigation support.</li>
+      <li>Information sharing on threats and vulnerabilities.</li>
+    </ul>
+    <strong>Significance:</strong> A core component supporting the implementation of the NIS and NIS2 Directives.<br>
+  `
+},
+{
+  id: 11,
+  group: "org",
+  content: "EU-CyCLONe",
+  start: "2022-01-01",
+  description: `
+    <strong>Launch Date:</strong> 2022<br>
+    <strong>Purpose:</strong> Coordination mechanism for EU countries during large-scale cyber crises and attacks.<br>
+    <strong>Main Objectives:</strong>
+    <ul>
+      <li>Ensure effective collective response to major cyber incidents.</li>
+      <li>Enhance information sharing and operational coordination between CSIRTs and other stakeholders.</li>
+      <li>Strengthen the resilience of the EU’s digital infrastructure.</li>
+    </ul>
+    <strong>Role in EU Cybersecurity:</strong> A key tool under NIS2 for crisis management and EU-wide cybersecurity coordination.<br>
+  `
+}
+
+    ]);
+
+    // Create timeline
+    const container = document.getElementById("timeline");
+
+    const options = {
+      groupOrder: 'content', // alphabetical group order
+      tooltip: {
+        followMouse: true,
+        overflowMethod: 'cap'
+      },
+      template: function (item) {
+        return `<strong>${item.content}</strong>`;
+      }
+    };
+
+    const timeline = new vis.Timeline(container, items, groups, options);
+
+    // Event listener for item selection
+    timeline.on("select", function (props) {
+      const infoBox = document.getElementById("timeline-info");
+      if (props.items.length > 0) {
+        const selectedItem = items.get(props.items[0]);
+        infoBox.innerHTML = selectedItem.description;
+      } else {
+        infoBox.innerHTML = "<em>Select an item to see details...</em>";
+      }
+    });
+  </script>
+</body>
+</html>

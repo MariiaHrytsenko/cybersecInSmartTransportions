@@ -1,27 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Простий Cybersecurity Dashboard</title>
-<link rel="stylesheet" href="assets/css/style.css">
-<link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cybersecurity Dashboard</title>
 
+  <!-- Fonts and Base Styles -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    section {
+      padding: 40px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    h2, h3 {
+      color: #2c3e50;
+      border-left: 5px solid #3498db;
+      padding-left: 15px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1.3em;
+      margin-bottom: 20px;
+    }
+
+    #site-structure-network,
+    #category-network,
+    #timeline {
+      height: 300px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    #category-info,
+    #timeline-info {
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border: 1px solid #e1e4e8;
+      border-radius: 5px;
+    }
+
+    .vis-network .vis-node {
+      font-size: 14px !important;
+    }
+  </style>
 </head>
+
 <body>
 
-<section id="header">
-  <h2>1. Site Structure Overview</h2>
-  <div id="site-structure-network"></div>
-</section>
+  <section id="header">
+    <h2>1. Site Structure Overview</h2>
+    <div id="site-structure-network"></div>
+  </section>
 
-<section id="system-categories">
-  <h2>2. System Categories (IT, OT, CT)</h2>
-  <div id="category-network"></div>
-  <div id="category-info"><em>Click a node to see more info here.</em></div>
-</section>
+  <section id="system-categories">
+    <h2>2. System Categories (IT, OT, CT)</h2>
+    <div id="category-network"></div>
+    <div id="category-info"><em>Click a node to see more info here.</em></div>
+  </section>
 
-<section id="attacks">
+  <section id="attacks">
   <h3 class="section-title">Attack Chain Visualizations</h3>
 
      <!-- Phishing Attack -->
@@ -162,116 +214,105 @@
         </div>
 </section>
 
+  <section id="eu-regulations">
+    <h2>3. EU Regulations Timeline</h2>
+    <div id="timeline"></div>
+    <div id="timeline-info"><em>Select an event from the timeline to view details here.</em></div>
+  </section>
 
-<section id="eu-regulations">
-  <h2>3. EU Regulations Timeline</h2>
-  <div id="timeline" style="height: 250px;"></div>
-  <div id="timeline-info"><em>Select an event from the timeline to view details here.</em></div>
-</section>
+  <!-- VIS.js libraries -->
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="https://unpkg.com/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
 
-<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-<script src="https://unpkg.com/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+  <!-- VIS Graph Logic -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Site Structure Network
+      const structureNetwork = new vis.Network(
+        document.getElementById("site-structure-network"),
+        {
+          nodes: new vis.DataSet([
+            { id: 1, label: "Home" },
+            { id: 2, label: "System Categories" },
+            { id: 3, label: "Attacks" },
+            { id: 4, label: "EU Regulations" },
+            { id: 5, label: "Analytics" }
+          ]),
+          edges: new vis.DataSet([
+            { from: 1, to: 2 },
+            { from: 1, to: 3 },
+            { from: 1, to: 4 },
+            { from: 1, to: 5 }
+          ])
+        },
+        {
+          nodes: {
+            color: { background: "#ecf0f1", border: "#3498db", highlight: "#2980b9" },
+            font: { color: "#2c3e50", size: 16 }
+          },
+          edges: {
+            color: "#bdc3c7",
+            arrows: "to"
+          },
+          interaction: { hover: true }
+        }
+      );
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+      structureNetwork.on("click", params => {
+        const sectionMap = {
+          1: "header",
+          2: "system-categories",
+          3: "attacks",
+          4: "eu-regulations",
+          5: "analytics"
+        };
+        if (params.nodes.length) {
+          const targetId = sectionMap[params.nodes[0]];
+          const el = document.getElementById(targetId);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }
+      });
 
-  // 1. Site Structure Overview
-  const structureNetwork = new vis.Network(
-    document.getElementById("site-structure-network"),
-    {
-      nodes: new vis.DataSet([
-        { id: 1, label: "Home", shape: "box", color: "#97C2FC" },
-        { id: 2, label: "System Categories", shape: "box", color: "#FFB347" },
-        { id: 3, label: "Attacks", shape: "box", color: "#FF6961" },
-        { id: 4, label: "EU Regulations", shape: "box", color: "#77DD77" },
-        { id: 5, label: "Analytics", shape: "box", color: "#CBAACB" }
-      ]),
-      edges: new vis.DataSet([
-        { from: 1, to: 2 },
-        { from: 1, to: 3 },
-        { from: 1, to: 4 },
-        { from: 1, to: 5 }
-      ])
-    },
-    { nodes: { font: { size: 16 } }, interaction: { hover: true } }
-  );
+      // 2. System Categories Network
+      const systemCategoriesNetwork = new vis.Network(
+        document.getElementById("category-network"),
+        {
+          nodes: new vis.DataSet([
+            { id: "IT", label: "IT", title: "Information Technology" },
+            { id: "OT", label: "OT", title: "Operational Technology" },
+            { id: "CT", label: "CT", title: "Communication Technology" }
+          ]),
+          edges: new vis.DataSet([
+            { from: "IT", to: "OT" },
+            { from: "OT", to: "CT" },
+            { from: "CT", to: "IT" }
+          ])
+        },
+        {
+          nodes: {
+            color: { background: "#dfe6e9", border: "#636e72", highlight: "#2d3436" },
+            font: { size: 14, color: "#2c3e50" }
+          },
+          edges: { smooth: true, color: "#b2bec3" },
+          interaction: { hover: true }
+        }
+      );
 
-  structureNetwork.on("click", params => {
-    if (params.nodes.length) {
-      const sectionMap = {
-        1: "header",
-        2: "system-categories",
-        3: "attacks",        // Тобі потрібно додати цей id в HTML, якщо хочеш, щоб скрол працював
-        4: "eu-regulations",
-        5: "analytics"       // Так само тут
+      const descriptions = {
+        IT: `<h3>Information Technology (IT)</h3><p>Manages digital services, databases, and enterprise platforms.</p><p><strong>Example attacks:</strong> phishing, database breaches, malware.</p>`,
+        OT: `<h3>Operational Technology (OT)</h3><p>Controls physical operations such as SCADA or industrial devices.</p><p><strong>Example attacks:</strong> controller hijacking, network infiltration.</p>`,
+        CT: `<h3>Communication Technology (CT)</h3><p>Enables communication such as GPS, satellite, and wireless networks.</p><p><strong>Example attacks:</strong> signal jamming, spoofing, denial of service.</p>`
       };
-      const targetId = sectionMap[params.nodes[0]];
-      const el = document.getElementById(targetId);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
-  });
 
-  // 2. System Categories (IT, OT, CT)
-  const systemCategoriesNetwork = new vis.Network(
-    document.getElementById("category-network"),
-    {
-      nodes: new vis.DataSet([
-        { id: "IT", label: "IT (Information Technology)", shape: "ellipse", color: "#FFB347" },
-        { id: "OT", label: "OT (Operational Technology)", shape: "ellipse", color: "#FF6961" },
-        { id: "CT", label: "CT (Communication Technology)", shape: "ellipse", color: "#77DD77" }
-      ]),
-      edges: new vis.DataSet([
-        { from: "IT", to: "OT" },
-        { from: "OT", to: "CT" },
-        { from: "CT", to: "IT" }
-      ])
-    },
-    { nodes: { font: { size: 14 }, margin: 10 }, edges: { smooth: true }, interaction: { hover: true } }
-  );
-
-  const descriptions = {
-    IT: `<h3>Information Technology (IT)</h3><p>Systems that manage and process information such as ticketing systems, enterprise services, and databases.</p><p><strong>Example attacks:</strong> phishing, database breaches, web application exploits.</p>`,
-    OT: `<h3>Operational Technology (OT)</h3><p>Systems that control physical operations like train automation and SCADA systems at airports.</p><p><strong>Example attacks:</strong> remote SCADA access, command manipulation, physical interference.</p>`,
-    CT: `<h3>Communication Technology (CT)</h3><p>Technologies that enable communication, including GPS, satellite, and V2X systems.</p><p><strong>Example attacks:</strong> GPS spoofing, communication interception, DDoS on networks.</p>`
-  };
-
-  const infoBox = document.getElementById("category-info");
-  systemCategoriesNetwork.on("click", params => {
-    if (params.nodes.length) {
-      const id = params.nodes[0];
-      infoBox.innerHTML = descriptions[id] || "<p>No data available.</p>";
-    }
-  });
-
-  // 3. EU Regulations Timeline
-  const items = new vis.DataSet([
-    { id: 1, content: "NIS2 Directive", start: "2024-01-01", description: "Cyber risk management rules for critical sectors, including transportation." },
-    { id: 2, content: "ENISA (EU Cybersecurity Agency)", start: "2004-10-01", description: "Coordinates EU cybersecurity efforts and provides guidance to businesses and governments." },
-    { id: 3, content: "GDPR", start: "2018-05-25", description: "EU regulation on personal data protection with cybersecurity implications." },
-    { id: 4, content: "Cybersecurity Act", start: "2019-06-27", description: "EU regulation for cybersecurity certification of products and services." }
-  ]);
-
-  const timeline = new vis.Timeline(
-    document.getElementById("timeline"),
-    items,
-    { stack: false, showCurrentTime: true }
-  );
-
-  const timelineInfo = document.getElementById("timeline-info");
-  timeline.on("select", props => {
-    if (props.items.length === 1) {
-      const selected = items.get(props.items[0]);
-      timelineInfo.innerHTML = `<h3>${selected.content}</h3><p>${selected.description}</p>`;
-    } else {
-      timelineInfo.innerHTML = `<em>Select an event from the timeline to view details here.</em>`;
-    }
-  });
-
+      const infoBox = document.getElementById("category-info");
+      systemCategoriesNetwork.on("click", params => {
+        if (params.nodes.length) {
+          const id = params.nodes[0];
+          infoBox.innerHTML = descriptions[id] || "<p>No data available.</p>";
+        }
+      });
 });
-</script>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@9.1.0/dist/vis-network.min.js"></script>
-    <script src="assets/js/script.js"></script>
-
+  </script>
 </body>
 </html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transportation System Graph</title>
+
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      border-left: 5px solid #3498db;
+      padding-left: 10px;
+    }
+
+    #ts-network {
+      height: 600px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 6px;
+    }
+
+    #ts-info {
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border: 1px solid #e1e4e8;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Transportation System Overview</h2>
+  <div id="ts-network"></div>
+  <div id="ts-info"><em>Click a node to see more info here.</em></div>
+
+  <script>
+    const nodes = new vis.DataSet([
+      { id: "TS", label: "TS", title: "Transportation System", shape: "box", color: "#dfe6e9" },
+      { id: "ITS", label: "ITS", title: "Intelligent TS", shape: "ellipse", color: "#a29bfe" },
+      { id: "STS", label: "STS", title: "Smart TS", shape: "ellipse", color: "#81ecec" },
+
+      { id: "IT", label: "IT", title: "Information Technology" },
+      { id: "OT", label: "OT", title: "Operational Technology" },
+      { id: "CT", label: "CT", title: "Communication Technology" },
+
+      { id: "AI", label: "AI", title: "Artificial Intelligence" },
+      { id: "DA", label: "Data Analytics", title: "Data-driven insights" },
+      { id: "IoT", label: "IoT", title: "Internet of Things" }
+    ]);
+
+    const edges = new vis.DataSet([
+      { from: "TS", to: "ITS" },
+      { from: "TS", to: "STS" },
+
+      { from: "ITS", to: "IT" },
+      { from: "ITS", to: "OT" },
+      { from: "ITS", to: "CT" },
+
+      { from: "STS", to: "AI" },
+      { from: "STS", to: "DA" },
+      { from: "STS", to: "IoT" }
+    ]);
+
+    const network = new vis.Network(document.getElementById("ts-network"), {
+      nodes: nodes,
+      edges: edges
+    }, {
+      nodes: {
+        shape: "dot",
+        size: 25,
+        font: { size: 16 },
+        borderWidth: 2
+      },
+      edges: {
+        arrows: "to",
+        color: { color: "#636e72", highlight: "#0984e3" },
+        smooth: {
+          type: "cubicBezier",
+          roundness: 0.4
+        }
+      },
+      layout: {
+        hierarchical: {
+          enabled: true,
+          levelSeparation: 100,
+          nodeSpacing: 150,
+          direction: "UD",
+          sortMethod: "hubsize"
+        }
+      },
+      interaction: { hover: true }
+    });
+
+    const descriptions = {
+      TS: `<h3>Transportation System (TS)</h3><p>General category of all physical and digital systems that move people or goods.</p>`,
+      ITS: `<h3>Intelligent Transportation System (ITS)</h3><p>TS enhanced with IT, OT, and CT for monitoring, managing, and optimizing traffic and infrastructure.</p>`,
+      STS: `<h3>Smart Transportation System (STS)</h3><p>Next-gen TS using AI, data analytics, and IoT for autonomous, predictive, and adaptive mobility.</p>`,
+      IT: `<h3>Information Technology (IT)</h3><p>Handles digital infrastructure: software, databases, user interfaces.</p>`,
+      OT: `<h3>Operational Technology (OT)</h3><p>Controls physical devices like traffic signals, sensors, and control systems.</p>`,
+      CT: `<h3>Communication Technology (CT)</h3><p>Enables real-time communication through GPS, cellular, and wireless networks.</p>`,
+      AI: `<h3>Artificial Intelligence (AI)</h3><p>Allows systems to make decisions, predictions, and automations based on data patterns.</p>`,
+      DA: `<h3>Data Analytics</h3><p>Processes and interprets large datasets to inform decisions in transport systems.</p>`,
+      IoT: `<h3>Internet of Things (IoT)</h3><p>Enables connectivity between vehicles, infrastructure, and control systems via sensors.</p>`
+    };
+
+    const infoBox = document.getElementById("ts-info");
+    network.on("click", function (params) {
+      if (params.nodes.length > 0) {
+        const id = params.nodes[0];
+        infoBox.innerHTML = descriptions[id] || "<p>No data available.</p>";
+      }
+    });
+  </script>
+
+</body>
+</html>
