@@ -279,7 +279,11 @@ function runPipelineAttack(containerId, btn) {
   const fullComment = container.querySelector('#full-comment-pipeline p').innerHTML;
 
   // Reset everything
-  nodes.forEach(n => n.style.opacity = 0.3);
+  nodes.forEach(n => {
+    n.style.opacity = 0.3;
+    n.classList.remove('completed');
+    n.classList.remove('active');
+  });
   vpnLoginDiv.style.display = 'none';
   infectionDiv.style.display = 'none';
   scadaDiv.style.display = 'none';
@@ -306,21 +310,39 @@ function runPipelineAttack(containerId, btn) {
     }, 120);
   }
 
-  function highlightNode(index) {
-    nodes.forEach(n => n.style.opacity = 0.3);
-    if (nodes[index]) nodes[index].style.opacity = 1;
+  function updateNodesHighlight(index) {
+    nodes.forEach((n, i) => {
+      if (i < index) {
+        n.style.opacity = 0.7;    // Пройдені кроки
+        n.classList.add('completed');
+        n.classList.remove('active');
+      } else if (i === index) {
+        n.style.opacity = 1;      // Активний крок
+        n.classList.add('active');
+        n.classList.remove('completed');
+      } else {
+        n.style.opacity = 0.3;    // Майбутні кроки
+        n.classList.remove('completed');
+        n.classList.remove('active');
+      }
+    });
   }
 
   function showStep() {
+    updateNodesHighlight(step);
+
+    // Покажемо всі попередні візуальні блоки разом з поточним
+    if (step >= 0) vpnLoginDiv.style.display = 'flex';
+    if (step >= 1) infectionDiv.style.display = 'flex';
+    if (step >= 2) scadaDiv.style.display = 'flex';
+    if (step >= 3) shutdownDiv.style.display = 'flex';
+
     switch(step) {
       case 0:
-        highlightNode(0);
-        vpnLoginDiv.style.display = 'block';
         commentBox.textContent = messages[step];
         animateTyping(usernameText, "pipeline_user", () => {
           animateTyping(passwordText, "••••••••", () => {
             setTimeout(() => {
-              vpnLoginDiv.style.display = 'none';
               step++;
               showStep();
             }, 1500);
@@ -329,30 +351,15 @@ function runPipelineAttack(containerId, btn) {
         break;
 
       case 1:
-        highlightNode(1);
-        infectionDiv.style.display = 'flex';
-        commentBox.textContent = messages[step];
-        setTimeout(() => {
-          infectionDiv.style.display = 'none';
-          step++;
-          showStep();
-        }, 3500);
-        break;
-
       case 2:
-        highlightNode(2);
-        scadaDiv.style.display = 'flex';
         commentBox.textContent = messages[step];
         setTimeout(() => {
-          scadaDiv.style.display = 'none';
           step++;
           showStep();
         }, 3500);
         break;
 
       case 3:
-        highlightNode(3);
-        shutdownDiv.style.display = 'flex';
         commentBox.textContent = messages[step];
         setTimeout(() => {
           commentBox.textContent = '';
@@ -366,6 +373,7 @@ function runPipelineAttack(containerId, btn) {
 
   showStep();
 }
+
 
 
 //
@@ -392,7 +400,11 @@ function runGPSAttack(containerId, btn) {
   const fullComment = fullCommentBox.innerHTML;
 
   // Reset state
-  nodes.forEach(n => n.style.opacity = 0.3);
+  nodes.forEach(n => {
+    n.style.opacity = 0.3;
+    n.classList.remove('completed');
+    n.classList.remove('active');
+  });
   [gpsDiv, spoofDiv, fakeLocDiv, errorDiv].forEach(d => d.style.display = "none");
   commentBox.textContent = "";
   fullCommentBox.style.display = "none";
@@ -401,58 +413,46 @@ function runGPSAttack(containerId, btn) {
 
   let step = 0;
 
-  function highlightNode(index) {
-    nodes.forEach(n => n.style.opacity = 0.3);
-    if (nodes[index]) nodes[index].style.opacity = 1;
+  function updateNodesHighlight(index) {
+    nodes.forEach((n, i) => {
+      if (i < index) {
+        n.style.opacity = 0.7;    // Пройдені кроки
+        n.classList.add('completed');
+        n.classList.remove('active');
+      } else if (i === index) {
+        n.style.opacity = 1;      // Активний крок
+        n.classList.add('active');
+        n.classList.remove('completed');
+      } else {
+        n.style.opacity = 0.3;    // Майбутні кроки
+        n.classList.remove('completed');
+        n.classList.remove('active');
+      }
+    });
   }
 
   function showStep() {
-    switch (step) {
-      case 0:
-        highlightNode(0);
-        gpsDiv.style.display = 'block';
-        commentBox.textContent = messages[step];
-        setTimeout(() => {
-          gpsDiv.style.display = 'none';
-          step++;
-          showStep();
-        }, 2500);
-        break;
+    updateNodesHighlight(step);
 
-      case 1:
-        highlightNode(1);
-        spoofDiv.style.display = 'block';
-        commentBox.textContent = messages[step];
-        setTimeout(() => {
-          spoofDiv.style.display = 'none';
-          step++;
-          showStep();
-        }, 2500);
-        break;
+    // Показати всі блоки до поточного кроку включно
+    if (step >= 0) gpsDiv.style.display = 'flex';
+    if (step >= 1) spoofDiv.style.display = 'flex';
+    if (step >= 2) fakeLocDiv.style.display = 'flex';
+    if (step >= 3) errorDiv.style.display = 'flex';
 
-      case 2:
-        highlightNode(2);
-        fakeLocDiv.style.display = 'block';
-        commentBox.textContent = messages[step];
-        setTimeout(() => {
-          fakeLocDiv.style.display = 'none';
-          step++;
-          showStep();
-        }, 2500);
-        break;
+    commentBox.textContent = messages[step];
 
-      case 3:
-        highlightNode(3);
-        errorDiv.style.display = 'block';
-        commentBox.textContent = messages[step];
-        setTimeout(() => {
-          commentBox.textContent = "";
-          fullCommentBox.style.display = "block";
-          fullCommentBox.innerHTML = fullComment;
-          btn.disabled = false;
-        }, 3000);
-        break;
-    }
+    setTimeout(() => {
+      if (step < 3) {
+        step++;
+        showStep();
+      } else {
+        commentBox.textContent = "";
+        fullCommentBox.style.display = "block";
+        fullCommentBox.innerHTML = fullComment;
+        btn.disabled = false;
+      }
+    }, step === 0 ? 2500 : 3000);
   }
 
   showStep();
