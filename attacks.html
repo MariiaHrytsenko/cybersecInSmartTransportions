@@ -21,7 +21,7 @@
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      padding: 50px; /* 50px відступів з усіх сторін */
+      padding: 50px;
       box-sizing: border-box;
     }
     .tabs {
@@ -161,48 +161,34 @@
       <button class="tab-link" onclick="openTab(event, 'gps')">GPS Spoofing</button>
     </div>
 
-    <!-- False Data Injection -->
     <div id="false-data" class="tab-content active">
       <div class="attack-title">False Data Injection</div>
-      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
-      <div class="attack-description">
-        False data is injected into the V2X network, tricking vehicles into reacting unnecessarily to non-existent obstacles, causing unsafe rerouting.
-      </div>
-      <div class="attack-visual" id="fdi-visual">
-        <!-- Steps will appear here -->
-      </div>
+      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
+      <div class="attack-description">False data is injected into the V2X network, tricking vehicles into reacting unnecessarily to non-existent obstacles, causing unsafe rerouting.</div>
+      <div class="attack-visual" id="false-data-visual"></div>
       <button class="run-btn" onclick="runAttack('false-data')">Run Attack</button>
     </div>
 
-    <!-- Sybil Attack -->
     <div id="sybil" class="tab-content">
       <div class="attack-title">Sybil Attack</div>
-      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
-      <div class="attack-description">
-        An attacker creates multiple fake vehicle identities causing the traffic system to believe there is congestion, which forces route rerouting.
-      </div>
+      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
+      <div class="attack-description">An attacker creates multiple fake vehicle identities causing the traffic system to believe there is congestion, which forces route rerouting.</div>
       <div class="attack-visual" id="sybil-visual"></div>
       <button class="run-btn" onclick="runAttack('sybil')">Run Attack</button>
     </div>
 
-    <!-- Phishing -->
     <div id="phishing" class="tab-content">
       <div class="attack-title">Phishing</div>
-      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
-      <div class="attack-description">
-        Users scan a malicious QR code leading to a fake website designed to steal login credentials.
-      </div>
+      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
+      <div class="attack-description">Users scan a malicious QR code leading to a fake website designed to steal login credentials.</div>
       <div class="attack-visual" id="phishing-visual"></div>
       <button class="run-btn" onclick="runAttack('phishing')">Run Attack</button>
     </div>
 
-    <!-- GPS Spoofing -->
     <div id="gps" class="tab-content">
       <div class="attack-title">GPS Spoofing</div>
-      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
-      <div class="attack-description">
-        Fake GPS signals are injected causing vehicles to receive incorrect location data and divert from their correct course.
-      </div>
+      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
+      <div class="attack-description">Fake GPS signals are injected causing vehicles to receive incorrect location data and divert from their correct course.</div>
       <div class="attack-visual" id="gps-visual"></div>
       <button class="run-btn" onclick="runAttack('gps')">Run Attack</button>
     </div>
@@ -210,12 +196,8 @@
 
   <script>
     function openTab(evt, tabName) {
-      document.querySelectorAll('.tab-content').forEach(tc => {
-        tc.classList.remove('active');
-      });
-     document.querySelectorAll('.tab-link').forEach(btn => {
-        btn.classList.remove('active');
-      });
+      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      document.querySelectorAll('.tab-link').forEach(btn => btn.classList.remove('active'));
       document.getElementById(tabName).classList.add('active');
       evt.currentTarget.classList.add('active');
     }
@@ -244,10 +226,7 @@
         { type: "arrow" },
         { type: "step", img: "fake-website.png", text: "Redirecting to fake login page" },
         { type: "arrow" },
-        { type: "step", animatedText: [
-                    "Passport No: AB1234567",
-                    "Address: 123 Main St, City",
-                    "Date of Birth: 01/01/1980"], text: "Entering stolen credentials..."},
+        { type: "step", animatedText: ["Passport No: AB1234567", "Address: 123 Main St, City", "Date of Birth: 01/01/1980"], text: "Entering stolen credentials..." },
         { type: "result", text: "❗ Credentials Stolen" }
       ],
       "gps": [
@@ -264,72 +243,45 @@
     };
 
     function createStepElement(step) {
-      if(step.type === "arrow") {
+      if (step.type === "arrow") {
         const arrow = document.createElement("div");
         arrow.className = "arrow";
         arrow.textContent = "➡️";
         return arrow;
-      } else if(step.type === "result") {
+      } else if (step.type === "result") {
         const result = document.createElement("div");
         result.className = "result";
         result.textContent = step.text;
         return result;
-      } else if(step.type === "step") {
+      } else {
         const div = document.createElement("div");
         div.className = "schema-step";
-        if(step.img) {
+
+        if (step.img) {
           const img = document.createElement("img");
-          img.src = step.img;  
+          img.src = step.img;
           img.alt = step.text;
           div.appendChild(img);
         }
-        else if(step.type === "step") {
-  const div = document.createElement("div");
-  div.className = "schema-step";
-  if(step.img) {
-    const img = document.createElement("img");
-    img.src = step.img;  
-    img.alt = step.text || "step image";
-    div.appendChild(img);
-  }
-  if(step.animatedText && Array.isArray(step.animatedText)) {
-    const container = document.createElement("div");
-    container.style.fontFamily = "monospace";
-    container.style.textAlign = "left";
-    container.style.width = "100%";
-    container.style.maxWidth = "200px";
-    container.style.marginTop = "10px";
-    div.appendChild(container);
 
-    div.animateText = async () => {
-      for (const line of step.animatedText) {
-        for(let i=1; i<=line.length; i++) {
-          container.textContent = line.slice(0, i);
-          await new Promise(r => setTimeout(r, 50));
-        }
-        container.appendChild(document.createElement("br"));
-        await new Promise(r => setTimeout(r, 300));
-      }
-    };
-  } else if(step.strike) {
-    const span = document.createElement("span");
-    span.style.textDecoration = "line-through";
-    span.textContent = step.text;
-    div.appendChild(span);
-    div.appendChild(document.createElement("br"));
-    const newSpan = document.createElement("span");
-    newSpan.style.color = "#e74c3c";
-    newSpan.textContent = step.strikeReplace;
-    div.appendChild(newSpan);
-  } else {
-    const p = document.createElement("p");
-    p.textContent = step.text;
-    div.appendChild(p);
-  }
-  return div;
-}
-
-        if(step.strike) {
+        if (step.animatedText) {
+          const container = document.createElement("div");
+          container.style.fontFamily = "monospace";
+          container.style.textAlign = "left";
+          container.style.maxWidth = "200px";
+          container.style.marginTop = "10px";
+          div.appendChild(container);
+          div.animateText = async () => {
+            for (const line of step.animatedText) {
+              for (let i = 1; i <= line.length; i++) {
+                container.textContent = line.slice(0, i);
+                await new Promise(r => setTimeout(r, 50));
+              }
+              container.appendChild(document.createElement("br"));
+              await new Promise(r => setTimeout(r, 300));
+            }
+          };
+        } else if (step.strike) {
           const span = document.createElement("span");
           span.style.textDecoration = "line-through";
           span.textContent = step.text;
@@ -344,6 +296,7 @@
           p.textContent = step.text;
           div.appendChild(p);
         }
+
         return div;
       }
     }
@@ -353,21 +306,17 @@
     }
 
     async function runAttack(attackKey) {
-  const container = document.getElementById(attackKey + "-visual");
-  resetVisual(container);
-  const steps = attacksData[attackKey];
-  for(let i=0; i < steps.length; i++) {
-    const el = createStepElement(steps[i]);
-    container.appendChild(el);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    el.classList.add("visible");
-
-    if(el.animateText) {
-      await el.animateText();
+      const container = document.getElementById(attackKey + "-visual");
+      resetVisual(container);
+      const steps = attacksData[attackKey];
+      for (let i = 0; i < steps.length; i++) {
+        const el = createStepElement(steps[i]);
+        container.appendChild(el);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        el.classList.add("visible");
+        if (el.animateText) await el.animateText();
+      }
     }
-  }
-}
-
   </script>
 </body>
 </html>
