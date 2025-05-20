@@ -46,17 +46,17 @@
 
   <script>
     const nodes = new vis.DataSet([
-      { id: "TS", label: "TS", title: "Transportation System", shape: "box", color: "#dfe6e9" },
-      { id: "ITS", label: "ITS", title: "Intelligent TS", shape: "ellipse", color: "#a29bfe" },
-      { id: "STS", label: "STS", title: "Smart TS", shape: "ellipse", color: "#81ecec" },
+      { id: "TS", label: "TS", title: "Transportation System", shape: "box", color: "#dfe6e9", level: 0 },
+      { id: "ITS", label: "ITS", title: "Intelligent TS", shape: "ellipse", color: "#a29bfe", level: 1 },
+      { id: "STS", label: "STS", title: "Smart TS", shape: "ellipse", color: "#81ecec", level: 1 },
 
-      { id: "IT", label: "IT", title: "Information Technology" },
-      { id: "OT", label: "OT", title: "Operational Technology" },
-      { id: "CT", label: "CT", title: "Communication Technology" },
+      { id: "IT", label: "IT", title: "Information Technology", level: 2 },
+      { id: "OT", label: "OT", title: "Operational Technology", level: 2 },
+      { id: "CT", label: "CT", title: "Communication Technology", level: 2 },
 
-      { id: "AI", label: "AI", title: "Artificial Intelligence" },
-      { id: "DA", label: "Data Analytics", title: "Data-driven insights" },
-      { id: "IoT", label: "IoT", title: "Internet of Things" }
+      { id: "AI", label: "AI", title: "Artificial Intelligence", level: 2 },
+      { id: "DA", label: "Data Analytics", title: "Data-driven insights", level: 2 },
+      { id: "IoT", label: "IoT", title: "Internet of Things", level: 2 }
     ]);
 
     const edges = new vis.DataSet([
@@ -95,8 +95,8 @@
           enabled: true,
           levelSeparation: 100,
           nodeSpacing: 150,
-          direction: "UD",
-          sortMethod: "hubsize"
+          direction: "UD", // top-down
+          sortMethod: "directed"
         }
       },
       interaction: { hover: true }
