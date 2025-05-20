@@ -67,6 +67,58 @@
                 <li><strong>Business Consequences:</strong> fuel shortages on the East Coast of the USA, millions of dollars in damages.</li>
                 <li><strong>Attack Analysis:</strong> exploitation of a vulnerability in VPN access, lack of network segmentation.</li>
             </ul>
+
+                <h3>4. Attack Chain Visualizations</h3>
+
+<div class="attack-visual" id="attack-it">
+    <h4>🎯 QR Phishing Attack – Deutsche Bahn (2022)</h4>
+    <div class="chain">
+        <span class="node">📱 Користувач</span>
+        <span class="arrow">⋯</span>
+        <span class="node">📷 QR-код</span>
+        <span class="arrow">⋯</span>
+        <span class="node">🌐 Фішинговий сайт</span>
+        <span class="arrow">⋯</span>
+        <span class="node">💳 Викрадення даних</span>
+    </div>
+    <button onclick="runAttack('attack-it')">Розпочати атаку</button>
+    <div class="comment-box"></div>
+</div>
+
+<div class="attack-visual" id="attack-ot">
+    <h4>🛢️ Colonial Pipeline – Ransomware Attack (2021)</h4>
+    <div class="chain">
+        <span class="node">🔓 Вразливий VPN</span>
+        <span class="arrow">⋯</span>
+        <span class="node">💼 IT-система</span>
+        <span class="arrow">⋯</span>
+        <span class="node">🛠️ SCADA мережа</span>
+        <span class="arrow">⋯</span>
+        <span class="node">⛔ Зупинка роботи</span>
+    </div>
+    <button onclick="runAttack('attack-ot')">Розпочати атаку</button>
+    <div class="comment-box"></div>
+</div>
+
+<div class="attack-visual" id="attack-ct">
+    <h4>📡 GPS Spoofing – Scandinavia & Baltics (2023)</h4>
+    <div class="chain">
+        <span class="node">📍 GPS супутник</span>
+        <span class="arrow">⋯</span>
+        <span class="node">📡 Глушіння сигналу</span>
+        <span class="arrow">⋯</span>
+        <span class="node">✈️ Авіація / кораблі</span>
+        <span class="arrow">⋯</span>
+        <span class="node">❗ Збій навігації</span>
+    </div>
+    <button onclick="runAttack('attack-ct')">Розпочати атаку</button>
+    <div class="comment-box"></div>
+</div>
+
+
+
+
+
         </section>
         
 
@@ -146,7 +198,10 @@
                 </ul>
             </section>
 
-    
+
+
+
+    </div>
         <section id="map" style="height: 500px; width: 100%;"></section>
     
         <footer>

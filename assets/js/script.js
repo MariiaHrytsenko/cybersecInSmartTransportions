@@ -97,3 +97,63 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".attack-card");
+  cards.forEach((card, index) => {
+    card.style.opacity = 0;
+    card.style.transform = "translateY(30px)";
+    setTimeout(() => {
+      card.style.transition = "all 0.6s ease-out";
+      card.style.opacity = 1;
+      card.style.transform = "translateY(0)";
+    }, 200 * index);
+  });
+});
+
+
+function runAttack(id) {
+  const container = document.getElementById(id);
+  const nodes = container.querySelectorAll('.node');
+  const arrows = container.querySelectorAll('.arrow');
+  const comment = container.querySelector('.comment-box');
+
+  // Reset opacity
+  nodes.forEach(n => n.style.opacity = 0.3);
+  arrows.forEach(a => a.style.opacity = 0.3);
+  comment.textContent = "";
+
+  const steps = nodes.length;
+
+  for (let i = 0; i < steps; i++) {
+    setTimeout(() => {
+      nodes[i].style.opacity = 1;
+      if (i > 0) arrows[i - 1].style.opacity = 1;
+
+      const messages = {
+        "attack-it": [
+          "User scans the QR code on the train...",
+          "QR code redirects to a fake phishing site...",
+          "User enters payment information...",
+          "Data is stolen by attackers."
+        ],
+        "attack-ot": [
+          "Attackers gain access through vulnerable VPN...",
+          "They infiltrate internal IT systems...",
+          "Ransomware spreads into SCADA control systems...",
+          "Pipeline operations are halted."
+        ],
+        "attack-ct": [
+          "Satellite GPS signal is intercepted...",
+          "Attackers jam and spoof the GPS signal...",
+          "Aviation and ships lose accurate navigation...",
+          "Routes deviate, increasing risk of incidents."
+        ]
+      };
+
+      comment.textContent = messages[id][i];
+
+    }, i * 1200);
+  }
+}

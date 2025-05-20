@@ -191,3 +191,44 @@ section p {
     margin: 50px auto;
     width: 80%;
 }
+
+
+.attack-visual {
+  margin: 2rem 0;
+  background: #fff;
+  border-left: 6px solid #2980b9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.node {
+  background: #ecf0f1;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  margin: 0.3rem;
+  opacity: 0.3;
+  transition: all 0.4s ease;
+}
+
+.arrow {
+  margin: 0 0.5rem;
+  color: #aaa;
+  opacity: 0.3;
+  transition: all 0.4s ease;
+}
+
+.comment-box {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #444;
+  min-height: 1.2em;
+}
