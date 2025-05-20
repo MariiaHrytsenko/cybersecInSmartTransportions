@@ -153,46 +153,77 @@
 </head>
 <body>
   <h1>Cyber Threats to Transport Companies</h1>
-  <div class="tab-container">
-    <div class="tabs">
-      <button class="tab-link active" onclick="openTab(event, 'false-data')">False Data Injection</button>
-      <button class="tab-link" onclick="openTab(event, 'sybil')">Sybil Attack</button>
-      <button class="tab-link" onclick="openTab(event, 'phishing')">Phishing</button>
-      <button class="tab-link" onclick="openTab(event, 'gps')">GPS Spoofing</button>
-    </div>
-
-    <div id="false-data" class="tab-content active">
-      <div class="attack-title">False Data Injection</div>
-      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
-      <div class="attack-description">False data is injected into the V2X network, tricking vehicles into reacting unnecessarily to non-existent obstacles, causing unsafe rerouting.</div>
-      <div class="attack-visual" id="false-data-visual"></div>
-      <button class="run-btn" onclick="runAttack('false-data')">Run Attack</button>
-    </div>
-
-    <div id="sybil" class="tab-content">
-      <div class="attack-title">Sybil Attack</div>
-      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
-      <div class="attack-description">An attacker creates multiple fake vehicle identities causing the traffic system to believe there is congestion, which forces route rerouting.</div>
-      <div class="attack-visual" id="sybil-visual"></div>
-      <button class="run-btn" onclick="runAttack('sybil')">Run Attack</button>
-    </div>
-
-    <div id="phishing" class="tab-content">
-      <div class="attack-title">Phishing</div>
-      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
-      <div class="attack-description">Users scan a malicious QR code leading to a fake website designed to steal login credentials.</div>
-      <div class="attack-visual" id="phishing-visual"></div>
-      <button class="run-btn" onclick="runAttack('phishing')">Run Attack</button>
-    </div>
-
-    <div id="gps" class="tab-content">
-      <div class="attack-title">GPS Spoofing</div>
-      <div class="source-link">Source: <a href="#">[Insert source URL here]</a></div>
-      <div class="attack-description">Fake GPS signals are injected causing vehicles to receive incorrect location data and divert from their correct course.</div>
-      <div class="attack-visual" id="gps-visual"></div>
-      <button class="run-btn" onclick="runAttack('gps')">Run Attack</button>
-    </div>
+<div class="tab-container">
+  <div class="tabs">
+    <button class="tab-link active" onclick="openTab(event, 'false-data')">False Data Injection</button>
+    <button class="tab-link" onclick="openTab(event, 'sybil')">Sybil Attack</button>
+    <button class="tab-link" onclick="openTab(event, 'phishing')">Phishing</button>
+    <button class="tab-link" onclick="openTab(event, 'gps')">GPS Spoofing</button>
   </div>
+
+<div id="false-data" class="tab-content active">
+  <div class="attack-title">False Data Injection</div>
+  <div class="source-link">
+    Source: <a href="https://www.researchgate.net/publication/377873103_Modern_Detection_Techniques_of_False_Data_Injection_Attacks_in_V2X_Communication_A_Critical_Analysis" target="_blank" rel="noopener noreferrer">
+      ResearchGate
+    </a>
+  </div>
+  <div class="attack-description">
+    Attackers inject false information into the V2X network, tricking vehicles into reacting to non-existent obstacles. This can lead to unnecessary braking, detours, or even accidents.<br><br>
+    <strong>Consequences:</strong> Traffic disruption, increased risk of collisions, reduced trust in autonomous systems.<br>
+    <strong>Mitigation:</strong> Cross-validate data from multiple sources (e.g. sensors, cloud), implement anomaly detection algorithms, apply cryptographic integrity checks to transmitted data.
+  </div>
+  <div class="attack-visual" id="false-data-visual"></div>
+  <button class="run-btn" onclick="runAttack('false-data')">Run Attack</button>
+</div>
+
+<div id="sybil" class="tab-content">
+  <div class="attack-title">Sybil Attack</div>
+  <div class="source-link">
+    Source: <a href="https://www.researchgate.net/publication/366830483_Sybil_Attack_Detection_on_ITS-V2X_System_using_a_Realistic_Traffic_Model-based_Approach" target="_blank" rel="noopener noreferrer">
+      ResearchGate
+    </a>
+  </div>
+  <div class="attack-description">
+    An attacker generates multiple fake vehicle identities within a V2X system. This creates a false sense of traffic congestion, manipulating real traffic flows and rerouting.<br><br>
+    <strong>Consequences:</strong> Traffic inefficiencies, fuel waste, increased travel time, network overload.<br>
+    <strong>Mitigation:</strong> Use identity authentication via PKI (Public Key Infrastructure), monitor for unrealistic behavior patterns, apply radio fingerprinting or hardware-based ID verification.
+  </div>
+  <div class="attack-visual" id="sybil-visual"></div>
+  <button class="run-btn" onclick="runAttack('sybil')">Run Attack</button>
+</div>
+
+<div id="phishing" class="tab-content">
+  <div class="attack-title">QR Code Phishing (“Quishing”) – A Rising Global Cyber Threat</div>
+  <div class="source-link">
+    Source: <a href="https://perception-point.io/blog/qr-code-phishing-quishing-attacks-have-more-than-quadrupled-in-just-one-month/" target="_blank" rel="noopener noreferrer">
+      Perception Point
+    </a>
+  </div>
+  <div class="attack-description">
+    QR code phishing attacks—also known as “quishing”—have surged globally. These malicious QR codes appear identical to legitimate ones and are often placed in public or sent via email. Scanning them can redirect users to phishing sites that steal credentials or install malware.<br><br>
+    <strong>Consequences:</strong> Credential theft, unauthorized access to corporate systems, financial loss, malware infection.<br>
+    <strong>Mitigation:</strong> Educate users to avoid scanning unknown QR codes, use mobile security apps with QR scanning protection, block image-based attachments in corporate emails.
+  </div>
+  <div class="attack-visual" id="phishing-visual"></div>
+  <button class="run-btn" onclick="runAttack('phishing')">Run Attack</button>
+</div>
+
+<div id="gps" class="tab-content">
+  <div class="attack-title">GPS Spoofing – Scandinavia & Baltics (2023)</div>
+  <div class="source-link">
+    Source: <a href="https://www.baltictimes.com/gps_disruptions_in_baltic_states_brought_to_attention_of_un_sec-gen/" target="_blank" rel="noopener noreferrer">
+      The Baltic Times
+    </a>
+  </div>
+  <div class="attack-description">
+    In 2023, GPS spoofing incidents disrupted aircraft and maritime navigation across Scandinavia and the Baltics. Fake GPS signals misled onboard systems, causing incorrect positioning.<br><br>
+    <strong>Consequences:</strong> Route deviation, navigational errors, possible accidents in air or sea traffic, loss of service availability.<br>
+    <strong>Mitigation:</strong> Use GNSS signal authentication (e.g., Galileo OSNMA), fuse GPS with inertial navigation systems (INS), detect anomalies via signal strength and timing analysis.
+  </div>
+  <div class="attack-visual" id="gps-visual"></div>
+  <button class="run-btn" onclick="runAttack('gps')">Run Attack</button>
+</div>
 
   <script>
     function openTab(evt, tabName) {
@@ -203,44 +234,46 @@
     }
 
     const attacksData = {
-      "false-data": [
-        { type: "step", img: "ai-system.png", text: "🚧 Obstacle Ahead!" },
-        { type: "arrow" },
-        { type: "step", img: "v2x.png", text: "Injected into V2X Network" },
-        { type: "arrow" },
-        { type: "step", img: "car-reaction.png", text: "Vehicle Makes Unjustified Maneuver" },
-        { type: "arrow" },
-        { type: "result", text: "❗ Unsafe Rerouting" }
-      ],
-      "sybil": [
-        { type: "step", img: "sybil-hacker.png", text: "Attacker" },
-        { type: "arrow" },
-        { type: "step", img: "multiple-cars.png", text: "Fake Identities as Vehicles" },
-        { type: "arrow" },
-        { type: "step", img: "traffic-map.png", text: "System Believes Traffic Congestion" },
-        { type: "arrow" },
-        { type: "result", text: "❗ Route Rerouted" }
-      ],
-      "phishing": [
-        { type: "step", img: "phone-scan.png", text: "User Scans the Malicious QR Code" },
-        { type: "arrow" },
-        { type: "step", img: "fake-website.png", text: "Redirecting to fake login page" },
-        { type: "arrow" },
-        { type: "step", animatedText: ["Passport No: AB1234567", "Address: 123 Main St, City", "Date of Birth: 01/01/1980"], text: "Entering stolen credentials..." },
-        { type: "result", text: "❗ Credentials Stolen" }
-      ],
-      "gps": [
-        { type: "step", img: "gps-hacker.png", text: "Attacker" },
-        { type: "arrow" },
-        { type: "step", img: "satellite.png", text: "Intercepted Satellite Signal" },
-        { type: "arrow" },
-        { type: "step", text: "Original: 34.0522, -118.2437", strike: true, strikeReplace: "Injected: 51.5074, -0.1278" },
-        { type: "arrow" },
-        { type: "step", img: "ship-plane.png", text: "Vehicle Receives Fake GPS Signal" },
-        { type: "arrow" },
-        { type: "result", text: "❗ Diverted Course" }
-      ]
-    };
+  "false-data": [
+    { type: "step", img: "./assets/images/hacker.png", text: "Attacker" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/ai-system.png", text: "Obstacle Ahead!" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/v2x.png", text: "Injected into V2X Network" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/car-reaction.png", text: "Vehicle Makes Unjustified Maneuver" },
+    { type: "arrow" },
+    { type: "result", text: "❗ Unsafe Rerouting" }
+  ],
+  "sybil": [
+    { type: "step", img: "./assets/images/hacker.png", text: "Attacker" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/multiple-cars.png", text: "Fake Identities as Vehicles" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/traffic-map.png", text: "System Believes Traffic Congestion" },
+    { type: "arrow" },
+    { type: "result", text: "❗ Route Rerouted" }
+  ],
+  "phishing": [
+    { type: "step", img: "./assets/images/phone-scan.png", text: "User Scans the Malicious QR Code" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/fake-website.png", text: "Redirecting to fake login page" },
+    { type: "arrow" },
+    { type: "step", animatedText: ["Passport No: AB1234567", "Address: 123 Main St, City", "Date of Birth: 01/01/1980"], text: "Entering stolen credentials..." },
+    { type: "result", text: "❗ Credentials Stolen" }
+  ],
+  "gps": [
+    { type: "step", img: "./assets/images/hacker.png", text: "Attacker" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/satellite.png", text: "Intercepted Satellite Signal" },
+    { type: "arrow" },
+    { type: "step", text: "Original: 34.0522, -118.2437", strike: true, strikeReplace: "Injected: 51.5074, -0.1278" },
+    { type: "arrow" },
+    { type: "step", img: "./assets/images/ship-plane.png", text: "Vehicle Receives Fake GPS Signal" },
+    { type: "arrow" },
+    { type: "result", text: "❗ Diverted Course" }
+  ]
+};
 
     function createStepElement(step) {
       if (step.type === "arrow") {
