@@ -6,234 +6,327 @@
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background-color: #f8f9fa;
       margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #2c3e50;
-      padding: 10px 0;
-      text-align: center;
-      color: white;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      background-color: #34495e;
-    }
-
-    nav button {
-      background: none;
-      border: none;
-      color: white;
-      padding: 12px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    nav button:hover,
-    nav button.active {
-      background-color: #2980b9;
-    }
-
-    .container {
+      background-color: #f4f6f8;
       padding: 20px;
     }
-
-    h2 {
-      margin-top: 20px;
-      color: #34495e;
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
     }
-
-    .attack-schema {
-      display: none;
-      margin-top: 15px;
-      align-items: center;
-      gap: 20px;
+    .tab-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 50px; /* 50px відступів з усіх сторін */
+      box-sizing: border-box;
+    }
+    .tabs {
+      display: flex;
       flex-wrap: wrap;
-      flex-direction: row;
+      background: #3498db;
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+    }
+    .tabs button {
+      flex: 1;
+      background: #3498db;
+      color: #fff;
+      padding: 15px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 16px;
+    }
+    .tabs button:hover,
+    .tabs button.active {
+      background: #2980b9;
+    }
+    .tab-content {
+      display: none;
+      padding: 20px 0 0 0;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
+    .attack-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    .source-link {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 15px;
+      user-select: text;
+    }
+    .attack-description {
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.4;
+      color: #444;
+    }
+    .attack-visual {
+      border: 2px solid #3498db;
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 180px;
+      background-color: #eaf1f8;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      font-size: 14px;
+      color: #2c3e50;
+    }
     .schema-step {
       text-align: center;
-      display: none;
-      min-width: 100px;
+      min-width: 120px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
-
+    .schema-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
     .schema-step img {
       width: 80px;
       height: auto;
-      display: block;
-      margin: 0 auto 5px;
-    }
-
-    .arrow {
-      font-size: 24px;
-      display: none;
-      align-self: center;
+      margin-bottom: 6px;
       user-select: none;
     }
-
+    .arrow {
+      font-size: 24px;
+      user-select: none;
+      align-self: center;
+      margin: 0 5px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .arrow.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
     .result {
       font-size: 20px;
-      color: red;
-      display: none;
-      min-width: 140px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .typing {
-      display: inline-block;
-      border-right: 2px solid #333;
-      white-space: nowrap;
-      overflow: hidden;
-      animation: typing 2s steps(30, end), blink 0.7s step-end infinite;
-    }
-
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent }
-    }
-
-    .strike-replace {
-      position: relative;
-      color: #777;
-      font-family: monospace;
-    }
-
-    .strike-replace::after {
-      content: attr(data-replace);
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: red;
-      animation: fadeIn 1s ease-in-out 1.5s forwards;
+      color: #e74c3c;
+      font-weight: 700;
       opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
-
-    .strike-replace.strike::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      height: 2px;
-      width: 100%;
-      background: red;
-      transform: rotate(-5deg);
+    .result.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
+    button.run-btn {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+    button.run-btn:hover {
+      background-color: #1f6391;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Cyber Attack Visual Scenarios</h1>
-  </header>
-
-  <nav>
-    <button onclick="runAttack('gps')" class="active">GPS Spoofing</button>
-    <button onclick="runAttack('phishing')">QR Phishing</button>
-    <button onclick="runAttack('sybil')">Sybil Attack</button>
-    <button onclick="runAttack('fdi')">False Data Injection</button>
-  </nav>
-
-  <div class="container">
-
-    <!-- GPS Spoofing -->
-    <div id="gps-schema" class="attack-schema">
-      <div class="schema-step"><img src="gps-hacker.png" alt="Hacker"><div>Attacker</div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="satellite.png" alt="Satellite"><div>Intercepted Satellite Signal</div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step">
-        <div>
-          <span class="strike-replace strike" data-replace="Injected: 51.5074, -0.1278">Original: 34.0522, -118.2437</span>
-        </div>
-      </div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="ship-plane.png" alt="Ship or Plane"><div>Vehicle Receives <br><b>Fake GPS Signal</b></div></div>
-      <div class="arrow">➡️</div>
-      <div class="result">❗ Diverted Course</div>
-    </div>
-
-    <!-- QR Phishing -->
-    <div id="phishing-schema" class="attack-schema">
-      <div class="schema-step"><img src="qr-sticker.png" alt="QR Code"><div>Malicious QR Code</div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="phone-scan.png" alt="Phone Scan"><div>User Scans the Code</div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="fake-website.png" alt="Fake Site"><div class="typing">Redirecting to: login.bánk.com...</div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step">
-        <div><span class="strike-replace strike" data-replace="Entered: ID12345678, John Doe, pass123">Typing: Name, ID, Password</span></div>
-      </div>
-      <div class="arrow">➡️</div>
-      <div class="result">❗ Credentials Stolen</div>
-    </div>
-
-    <!-- Sybil Attack -->
-    <div id="sybil-schema" class="attack-schema">
-      <div class="schema-step"><img src="sybil-hacker.png" alt="Hacker"><div>Attacker</div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="multiple-cars.png" alt="Fake Cars"><div>Fake Identities as Vehicles</div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="traffic-map.png" alt="Traffic Map"><div>System Believes<br><b>Traffic Congestion</b></div></div>
-      <div class="arrow">➡️</div>
-      <div class="result">❗ Route Rerouted</div>
+  <h1>Cyber Threats to Transport Companies</h1>
+  <div class="tab-container">
+    <div class="tabs">
+      <button class="tab-link active" onclick="openTab(event, 'false-data')">False Data Injection</button>
+      <button class="tab-link" onclick="openTab(event, 'sybil')">Sybil Attack</button>
+      <button class="tab-link" onclick="openTab(event, 'phishing')">Phishing</button>
+      <button class="tab-link" onclick="openTab(event, 'gps')">GPS Spoofing</button>
     </div>
 
     <!-- False Data Injection -->
-    <div id="fdi-schema" class="attack-schema">
-      <div class="schema-step"><img src="ai-system.png" alt="Fake Alert"><div><span class="strike-replace strike" data-replace="🚧 Obstacle Ahead!">✅ Clear Road</span></div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="v2x.png" alt="V2X"><div>Injected into<br><b>V2X Network</b></div></div>
-      <div class="arrow">➡️</div>
-      <div class="schema-step"><img src="car-reaction.png" alt="Car React"><div>Vehicle Makes<br><b>Unjustified Maneuver</b></div></div>
-      <div class="arrow">➡️</div>
-      <div class="result">❗ Unsafe Rerouting</div>
+    <div id="false-data" class="tab-content active">
+      <div class="attack-title">False Data Injection</div>
+      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
+      <div class="attack-description">
+        False data is injected into the V2X network, tricking vehicles into reacting unnecessarily to non-existent obstacles, causing unsafe rerouting.
+      </div>
+      <div class="attack-visual" id="fdi-visual">
+        <!-- Steps will appear here -->
+      </div>
+      <button class="run-btn" onclick="runAttack('false-data')">Run Attack</button>
     </div>
 
+    <!-- Sybil Attack -->
+    <div id="sybil" class="tab-content">
+      <div class="attack-title">Sybil Attack</div>
+      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
+      <div class="attack-description">
+        An attacker creates multiple fake vehicle identities causing the traffic system to believe there is congestion, which forces route rerouting.
+      </div>
+      <div class="attack-visual" id="sybil-visual"></div>
+      <button class="run-btn" onclick="runAttack('sybil')">Run Attack</button>
+    </div>
+
+    <!-- Phishing -->
+    <div id="phishing" class="tab-content">
+      <div class="attack-title">Phishing</div>
+      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
+      <div class="attack-description">
+        Users scan a malicious QR code leading to a fake website designed to steal login credentials.
+      </div>
+      <div class="attack-visual" id="phishing-visual"></div>
+      <button class="run-btn" onclick="runAttack('phishing')">Run Attack</button>
+    </div>
+
+    <!-- GPS Spoofing -->
+    <div id="gps" class="tab-content">
+      <div class="attack-title">GPS Spoofing</div>
+      <div class="source-link">Source: <a href="#" target="_blank" rel="noopener noreferrer">[Insert source URL here]</a></div>
+      <div class="attack-description">
+        Fake GPS signals are injected causing vehicles to receive incorrect location data and divert from their correct course.
+      </div>
+      <div class="attack-visual" id="gps-visual"></div>
+      <button class="run-btn" onclick="runAttack('gps')">Run Attack</button>
+    </div>
   </div>
 
   <script>
-    function runAttack(type) {
-      // Update nav button states
-      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = Array.from(document.querySelectorAll('nav button')).find(btn => btn.textContent.toLowerCase().includes(type));
-      if (activeBtn) activeBtn.classList.add('active');
-
-      // Hide all
-      document.querySelectorAll('.attack-schema').forEach(el => {
-        el.style.display = 'none';
-        el.querySelectorAll('.schema-step, .arrow, .result').forEach(child => {
-          child.style.display = 'none';
-        });
+    function openTab(evt, tabName) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(tc => {
+        tc.classList.remove('active');
       });
-
-      // Show selected with animation
-      const schema = document.getElementById(`${type}-schema`);
-      if (!schema) return;
-      schema.style.display = 'flex';
-
-      const steps = schema.querySelectorAll('.schema-step, .arrow, .result');
-      steps.forEach((step, i) => {
-        setTimeout(() => {
-          step.style.display = 'block';
-        }, 400 * i);
+      // Remove active class from all buttons
+      document.querySelectorAll('.tab-link').forEach(btn => {
+        btn.classList.remove('active');
       });
+      // Show selected tab content
+      document.getElementById(tabName).classList.add('active');
+      // Mark this button as active
+      evt.currentTarget.classList.add('active');
     }
 
-    // Initial load
-    runAttack('gps');
+    // Схеми кроків для кожної атаки
+    const attacksData = {
+      "false-data": [
+        { type: "step", img: "ai-system.png", text: "🚧 Obstacle Ahead!" },
+        { type: "arrow" },
+        { type: "step", img: "v2x.png", text: "Injected into V2X Network" },
+        { type: "arrow" },
+        { type: "step", img: "car-reaction.png", text: "Vehicle Makes Unjustified Maneuver" },
+        { type: "arrow" },
+        { type: "result", text: "❗ Unsafe Rerouting" }
+      ],
+      "sybil": [
+        { type: "step", img: "sybil-hacker.png", text: "Attacker" },
+        { type: "arrow" },
+        { type: "step", img: "multiple-cars.png", text: "Fake Identities as Vehicles" },
+        { type: "arrow" },
+        { type: "step", img: "traffic-map.png", text: "System Believes Traffic Congestion" },
+        { type: "arrow" },
+        { type: "result", text: "❗ Route Rerouted" }
+      ],
+      "phishing": [
+        { type: "step", img: "qr-sticker.png", text: "Malicious QR Code" },
+        { type: "arrow" },
+        { type: "step", img: "phone-scan.png", text: "User Scans the Code" },
+        { type: "arrow" },
+        { type: "step", img: "fake-website.png", text: "Redirecting to fake login page" },
+        { type: "arrow" },
+        { type: "step", img: "credentials.png", text: "Credentials Stolen" },
+        { type: "arrow" },
+        { type: "result", text: "❗ Credentials Stolen" }
+      ],
+      "gps": [
+        { type: "step", img: "gps-hacker.png", text: "Attacker" },
+        { type: "arrow" },
+        { type: "step", img: "satellite.png", text: "Intercepted Satellite Signal" },
+        { type: "arrow" },
+        { type: "step", text: "Original: 34.0522, -118.2437", strike: true, strikeReplace: "Injected: 51.5074, -0.1278" },
+        { type: "arrow" },
+        { type: "step", img: "ship-plane.png", text: "Vehicle Receives Fake GPS Signal" },
+        { type: "arrow" },
+        { type: "result", text: "❗ Diverted Course" }
+      ]
+    };
+
+    function createStepElement(step) {
+      if(step.type === "arrow") {
+        const arrow = document.createElement("div");
+        arrow.className = "arrow";
+        arrow.textContent = "➡️";
+        return arrow;
+      } else if(step.type === "result") {
+        const result = document.createElement("div");
+        result.className = "result";
+        result.textContent = step.text;
+        return result;
+      } else if(step.type === "step") {
+        const div = document.createElement("div");
+        div.className = "schema-step";
+        if(step.img) {
+          const img = document.createElement("img");
+          img.src = step.img;  // Поки що, іконки потрібно буде додати самому або замінити
+          img.alt = step.text;
+          div.appendChild(img);
+        }
+        // Якщо треба перекреслення тексту (GPS spoofing)
+        if(step.strike) {
+          const span = document.createElement("span");
+          span.style.textDecoration = "line-through";
+          span.textContent = step.text;
+          div.appendChild(span);
+          div.appendChild(document.createElement("br"));
+          const newSpan = document.createElement("span");
+          newSpan.style.color = "#e74c3c";
+          newSpan.textContent = step.strikeReplace;
+          div.appendChild(newSpan);
+        } else {
+          const p = document.createElement("p");
+          p.textContent = step.text;
+          div.appendChild(p);
+        }
+        return div;
+      }
+    }
+
+    // Очистка вікна атаки
+    function resetVisual(container) {
+      container.innerHTML = "";
+    }
+
+    // Запуск атаки крок за кроком
+    async function runAttack(attackKey) {
+      const container = document.getElementById(attackKey + "-visual");
+      resetVisual(container);
+      const steps = attacksData[attackKey];
+      for(let i=0; i < steps.length; i++) {
+        const el = createStepElement(steps[i]);
+        container.appendChild(el);
+        // Затримка для покрокового показу
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Відкриваємо видимість з анімацією
+        el.classList.add("visible");
+      }
+    }
   </script>
 </body>
 </html>
