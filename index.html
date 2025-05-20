@@ -52,74 +52,160 @@
                 </tbody>
             </table>
         
-            <h3>3. Real Cyber Incidents</h3>
+                <h3>3. Real Cyber Incidents</h3>
+                
+                <h4>GPS Jamming in Europe</h4>
+                <ul>
+                    <li><strong>Impact on Aviation:</strong> route deviations, navigation risks.</li>
+                    <li><strong>Impact on Logistics:</strong> disruption of road transport, navigation issues for maritime vessels.</li>
+                    <li><strong>Incidents:</strong> reported GPS outages in Scandinavia and the Baltic, likely caused by Russian interference.</li>
+                </ul>
             
-            <h4>GPS Jamming in Europe</h4>
-            <ul>
-                <li><strong>Impact on Aviation:</strong> route deviations, navigation risks.</li>
-                <li><strong>Impact on Logistics:</strong> disruption of road transport, navigation issues for maritime vessels.</li>
-                <li><strong>Incidents:</strong> reported GPS outages in Scandinavia and the Baltic, likely caused by Russian interference.</li>
-            </ul>
-        
-            <h4>Cyber Attack on Colonial Pipeline (2021)</h4>
-            <ul>
-                <li><strong>Impact on OT:</strong> disruption of SCADA systems due to ransomware attack.</li>
-                <li><strong>Business Consequences:</strong> fuel shortages on the East Coast of the USA, millions of dollars in damages.</li>
-                <li><strong>Attack Analysis:</strong> exploitation of a vulnerability in VPN access, lack of network segmentation.</li>
-            </ul>
+                <h4>Cyber Attack on Colonial Pipeline (2021)</h4>
+                <ul>
+                    <li><strong>Impact on OT:</strong> disruption of SCADA systems due to ransomware attack.</li>
+                    <li><strong>Business Consequences:</strong> fuel shortages on the East Coast of the USA, millions of dollars in damages.</li>
+                    <li><strong>Attack Analysis:</strong> exploitation of a vulnerability in VPN access, lack of network segmentation.</li>
+                </ul>
 
-                <h3>4. Attack Chain Visualizations</h3>
+<<h3>4. Attack Chain Visualizations</h3>
 
+<!-- Phishing Attack -->
 <div class="attack-visual" id="attack-it">
-    <h4>🎯 QR Phishing Attack – Deutsche Bahn (2022)</h4>
-    <div class="chain">
-        <span class="node">📱 Користувач</span>
-        <span class="arrow">⋯</span>
-        <span class="node">📷 QR-код</span>
-        <span class="arrow">⋯</span>
-        <span class="node">🌐 Фішинговий сайт</span>
-        <span class="arrow">⋯</span>
-        <span class="node">💳 Викрадення даних</span>
+  <h4>🎯 QR Phishing Attack – Deutsche Bahn (2022)</h4>
+  <div class="chain">
+    <span class="node"><img src="./assets/images/train.png" alt="Train" class="icon-img" /></span>
+    <span class="arrow">→</span>
+    <span class="node"><img src="./assets/images/qr-real.png" alt="QR Code" class="qr-img" /></span>
+    <span class="arrow">→</span>
+    <span class="node">🌐 Phishing Website</span>
+    <span class="arrow">→</span>
+    <span class="node">💳 Data Theft</span>
+  </div>
+
+  <div class="phishing-demo">
+    <div class="qr-code-container">
+      <img src="./assets/images/qr.png" alt="Phishing QR Code" class="qr-code" />
+      <div class="scanner-line"></div>
     </div>
-    <button onclick="runAttack('attack-it')">Розпочати атаку</button>
-    <div class="comment-box"></div>
+
+    <div class="login-form">
+      <label>Name: <span class="masked-input">** *******</span></label><br/>
+      <label>Document No: <span class="masked-input">** ****</span></label><br/>
+      <label>Email: <span class="masked-input">****@***.com</span></label><br/>
+    </div>
+
+    <div class="data-stolen-msg" style="display:none;">
+      <strong>⚠️ Data Stolen!</strong>
+    </div>
+  </div>
+
+  <button onclick="runPhishingDemo(
+    document.getElementById('attack-it'),
+    Array.from(document.querySelectorAll('#attack-it .chain .node')),
+    Array.from(document.querySelectorAll('#attack-it .chain .arrow')),
+    document.querySelector('#attack-it .comment-box'),
+    document.querySelector('#attack-it .full-comment'),
+    this
+  )">Start Attack</button>
+
+  <div class="comment-box"></div>
+  <div id="full-comment-attack-it" class="full-comment"></div>
 </div>
 
-<div class="attack-visual" id="attack-ot">
-    <h4>🛢️ Colonial Pipeline – Ransomware Attack (2021)</h4>
-    <div class="chain">
-        <span class="node">🔓 Вразливий VPN</span>
-        <span class="arrow">⋯</span>
-        <span class="node">💼 IT-система</span>
-        <span class="arrow">⋯</span>
-        <span class="node">🛠️ SCADA мережа</span>
-        <span class="arrow">⋯</span>
-        <span class="node">⛔ Зупинка роботи</span>
+<!-- Colonial Pipeline Attack Demo -->
+<div class="attack-visual" id="attack-pipeline">
+  <h4>🛢️ Colonial Pipeline Ransomware Attack</h4>
+
+  <div class="chain">
+    <span class="node">🔒 VPN Login</span>
+    <span class="arrow">→</span>
+    <span class="node">💻 Infection Spread</span>
+    <span class="arrow">→</span>
+    <span class="node">⚙️ SCADA Compromise</span>
+    <span class="arrow">→</span>
+    <span class="node">⛔ Pipeline Shutdown</span>
+  </div>
+
+  <div class="pipeline-demo">
+    <div class="vpn-login" style="display:none;">
+      <div class="login-box">
+        <div>Username: <span class="typed-text" id="username-text"></span></div>
+        <div>Password: <span class="typed-text" id="password-text"></span></div>
+      </div>
     </div>
-    <button onclick="runAttack('attack-ot')">Розпочати атаку</button>
-    <div class="comment-box"></div>
+
+    <div class="infection-spread" style="display:none;">
+      <div class="server infected">Server Infected</div>
+      <div class="workstation infected">Workstation Infected</div>
+    </div>
+
+    <div class="scada-compromise" style="display:none;">
+      <div class="controller normal">Pump Control Panel</div>
+      <div class="controller alert">🚨 Alarm Active!</div>
+    </div>
+
+    <div class="pipeline-shutdown" style="display:none;">
+      <div class="pipeline-crossed">🚫 Pipeline Stopped</div>
+      <div class="control-panel">System Shutdown</div>
+    </div>
+  </div>
+
+  <button onclick="runPipelineAttack('attack-pipeline', this)">Start Attack Demo</button>
+
+  <div class="comment-box"></div>
+  <div id="full-comment-pipeline" class="full-comment" style="display:none;">
+    <h5>Incident Overview</h5>
+    <p>The attack started with compromised VPN credentials, spreading malware in the network, controlling SCADA systems, and halting pipeline operations causing severe impact.</p>
+  </div>
 </div>
 
-<div class="attack-visual" id="attack-ct">
-    <h4>📡 GPS Spoofing – Scandinavia & Baltics (2023)</h4>
-    <div class="chain">
-        <span class="node">📍 GPS супутник</span>
-        <span class="arrow">⋯</span>
-        <span class="node">📡 Глушіння сигналу</span>
-        <span class="arrow">⋯</span>
-        <span class="node">✈️ Авіація / кораблі</span>
-        <span class="arrow">⋯</span>
-        <span class="node">❗ Збій навігації</span>
+<!-- GPS Spoofing -->
+<div class="attack-visual" id="attack-gps">
+  <h4>📡 GPS Spoofing – Scandinavia & Baltics (2023)</h4>
+  <div class="chain">
+    <span class="node"><img src="./assets/images/satelite.png" alt="GPS Satellite" class="icon-img" /></span>
+    <span class="arrow">→</span>
+    <span class="node"><img src="./assets/images/signal-jammer.jpeg" alt="Signal Jammer" class="icon-img" /></span>
+    <span class="arrow">→</span>
+    <span class="node"><img src="./assets/images/plane-ship.png" alt="Aviation & Ships" class="icon-img" /></span>
+    <span class="arrow">→</span>
+    <span class="node"><img src="./assets/images/nav-error.png" alt="Navigation Failure" class="icon-img" /></span>
+  </div>
+
+  <div class="gps-demo">
+    <div class="gps-signal" style="display:none;">
+      <div class="satellite">🛰️ Sending signal...</div>
+      <div class="signal-line">~~~~~</div>
     </div>
-    <button onclick="runAttack('attack-ct')">Розпочати атаку</button>
-    <div class="comment-box"></div>
+
+    <div class="spoofing-device" style="display:none;">
+      <div class="jammer">📡 Jammer intercepts</div>
+      <div class="fake-signal">🛰️ ➡️ 📍 Fake coordinates injected</div>
+    </div>
+
+    <div class="spoofed-location" style="display:none;">
+      <div class="vehicle">✈️ Aircraft: <span class="coords">Lat: 54.000, Lon: 19.000</span></div>
+      <div class="vehicle">🚢 Ship: <span class="coords">Lat: 54.001, Lon: 19.001</span></div>
+    </div>
+
+    <div class="nav-error" style="display:none;">
+      <div class="warning">⚠️ Aircraft off-course! Danger ahead!</div>
+      <div class="warning">⚠️ Ship veering toward restricted zone!</div>
+    </div>
+  </div>
+
+  <button onclick="runGPSAttack('attack-gps', this)">Start Attack Demo</button>
+
+  <div class="comment-box"></div>
+  <div id="full-comment-attack-gps" class="full-comment" style="display:none;">
+    <h5>Incident Summary</h5>
+    <p>GPS spoofing attacks manipulate satellite navigation by transmitting counterfeit signals. Vessels and aircraft receive false positioning data, leading to dangerous misnavigation.</p>
+    <strong>Impact:</strong> Route deviations, potential accidents, security breaches.<br>
+    <strong>Prevention:</strong> GNSS authentication, signal validation, anomaly detection systems.
+  </div>
 </div>
 
-
-
-
-
-        </section>
         
 
             <section id="cybersecurity-models">

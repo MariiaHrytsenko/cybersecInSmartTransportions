@@ -113,47 +113,347 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function runAttack(id) {
-  const container = document.getElementById(id);
-  const nodes = container.querySelectorAll('.node');
-  const arrows = container.querySelectorAll('.arrow');
-  const comment = container.querySelector('.comment-box');
+function runAttack(id, btn) {
+  btn.disabled = true;
 
-  // Reset opacity
-  nodes.forEach(n => n.style.opacity = 0.3);
-  arrows.forEach(a => a.style.opacity = 0.3);
-  comment.textContent = "";
-
-  const steps = nodes.length;
-
-  for (let i = 0; i < steps; i++) {
-    setTimeout(() => {
-      nodes[i].style.opacity = 1;
-      if (i > 0) arrows[i - 1].style.opacity = 1;
-
-      const messages = {
-        "attack-it": [
-          "User scans the QR code on the train...",
-          "QR code redirects to a fake phishing site...",
-          "User enters payment information...",
-          "Data is stolen by attackers."
-        ],
-        "attack-ot": [
-          "Attackers gain access through vulnerable VPN...",
-          "They infiltrate internal IT systems...",
-          "Ransomware spreads into SCADA control systems...",
-          "Pipeline operations are halted."
-        ],
-        "attack-ct": [
-          "Satellite GPS signal is intercepted...",
-          "Attackers jam and spoof the GPS signal...",
-          "Aviation and ships lose accurate navigation...",
-          "Routes deviate, increasing risk of incidents."
-        ]
-      };
-
-      comment.textContent = messages[id][i];
-
-    }, i * 1200);
+  if (id === "attack-it") {
+    runPhishingDemo(
+      document.getElementById(id),
+      Array.from(document.querySelectorAll(`#${id} .chain .node`)),
+      Array.from(document.querySelectorAll(`#${id} .chain .arrow`)),
+      document.querySelector(`#${id} .comment-box`),
+      document.getElementById(`full-comment-${id}`),
+      btn
+    );
+  } else if (id === "attack-pipeline") {
+    runPipelineDemo(
+      document.getElementById(id),
+      Array.from(document.querySelectorAll(`#${id} .chain .node`)),
+      Array.from(document.querySelectorAll(`#${id} .chain .arrow`)),
+      document.querySelector(`#${id} .comment-box`),
+      document.getElementById(`full-comment-${id}`),
+      btn
+    );
+  } else if (id === "attack-gps") {
+    runGPSDemo(
+      document.getElementById(id),
+      Array.from(document.querySelectorAll(`#${id} .chain .node`)),
+      Array.from(document.querySelectorAll(`#${id} .chain .arrow`)),
+      document.querySelector(`#${id} .comment-box`),
+      document.getElementById(`full-comment-${id}`),
+      btn
+    );
   }
+}
+
+//
+// === QR Phishing Demo ===
+//
+function runPhishingDemo(container, nodes, arrows, commentBox, fullCommentBox, btn) {
+  const messages = [
+    "User scans the QR code on the train ticket...",
+    "QR code redirects to a fake phishing website...",
+    "User enters payment info (masked input)...",
+    "Data is stolen by attackers!"
+  ];
+
+const fullComment = `In 2022, Deutsche Bahn users were tricked by malicious QR codes on train tickets. Scanning the QR code led to fake phishing sites where payment info was stolen.<br><br>
+<strong>Damage:</strong> Financial loss and compromised trust.<br>
+<strong>Mitigation:</strong> Verify QR codes, raise user awareness, and enable multi-factor authentication.`;
+
+  const scannerLine = container.querySelector('.scanner-line');
+  const qrCode = container.querySelector('.qr-code');
+  const loginForm = container.querySelector('.login-form');
+  const dataStolenMsg = container.querySelector('.data-stolen-msg');
+
+  // Reset visuals
+  nodes.forEach(n => (n.style.opacity = 0.3));
+  arrows.forEach(a => (a.style.opacity = 0.3));
+  commentBox.textContent = "";
+  fullCommentBox.style.display = "none";
+  fullCommentBox.textContent = "";
+  dataStolenMsg.style.display = "none";
+
+  loginForm.style.color = "#222";
+  Array.from(loginForm.querySelectorAll('.masked-input')).forEach(el => {
+    el.style.color = "#007bff";
+  });
+
+  // Animate steps with timings
+  let step = 0;
+
+  function animateStep() {
+    if (step === 0) {
+      // Highlight User and QR code nodes + animate scanning line top to bottom
+      nodes[0].style.opacity = 1; // Train
+      nodes[1].style.opacity = 1; // QR Code
+      arrows[0].style.opacity = 1;
+
+      // Animate scanner line top to bottom
+      scannerLine.style.transition = "transform 2s linear";
+      scannerLine.style.transform = "translateY(120px)";
+
+      commentBox.textContent = messages[step];
+      step++;
+      setTimeout(animateStep, 2500);
+
+    } else if (step === 1) {
+      // Reset scanner line position and hide it
+      scannerLine.style.transition = "none";
+      scannerLine.style.transform = "translateY(-140px)";
+
+      // Highlight Phishing site node + arrow
+      nodes[2].style.opacity = 1;
+      arrows[1].style.opacity = 1;
+
+      commentBox.textContent = messages[step];
+      step++;
+      setTimeout(animateStep, 2500);
+
+    } else if (step === 2) {
+      // Highlight Data Theft node + arrow
+      nodes[3].style.opacity = 1;
+      arrows[2].style.opacity = 1;
+
+      commentBox.textContent = messages[step];
+
+      // Animate masked input color change (simulate user input)
+      const maskedInputs = container.querySelectorAll('.masked-input');
+      let inputStep = 0;
+
+      function animateInput() {
+        if (inputStep < maskedInputs.length) {
+          maskedInputs[inputStep].style.color = '#d9534f'; // red "input"
+          setTimeout(() => {
+            maskedInputs[inputStep].style.color = '#007bff'; // revert
+            inputStep++;
+            animateInput();
+          }, 700);
+        } else {
+          setTimeout(() => {
+            step++;
+            animateStep();
+          }, 1000);
+        }
+      }
+      animateInput();
+
+    } else if (step === 3) {
+      // Show data stolen message and full comment
+      commentBox.textContent = messages[step];
+      dataStolenMsg.style.display = "inline-block";
+
+      fullCommentBox.innerHTML = fullComment;
+      fullCommentBox.style.display = "block";
+
+      btn.disabled = false;
+    }
+  }
+
+  animateStep();
+}
+
+
+//
+// === Pipeline demo ===
+//
+function runPipelineAttack(containerId, btn) {
+  const container = document.getElementById(containerId);
+  const nodes = container.querySelectorAll('.chain .node');
+  const commentBox = container.querySelector('.comment-box');
+  const fullCommentBox = container.querySelector('.full-comment');
+  const vpnLoginDiv = container.querySelector('.vpn-login');
+  const infectionDiv = container.querySelector('.infection-spread');
+  const scadaDiv = container.querySelector('.scada-compromise');
+  const shutdownDiv = container.querySelector('.pipeline-shutdown');
+  const usernameText = container.querySelector('#username-text');
+  const passwordText = container.querySelector('#password-text');
+
+  const messages = [
+    "Attacker logs in with stolen VPN credentials...",
+    "Malware spreads across internal servers and workstations...",
+    "SCADA controllers compromised; alarms triggered...",
+    "Pipeline operations halted; system shutdown initiated."
+  ];
+
+  const fullComment = container.querySelector('#full-comment-pipeline p').innerHTML;
+
+  // Reset everything
+  nodes.forEach(n => n.style.opacity = 0.3);
+  vpnLoginDiv.style.display = 'none';
+  infectionDiv.style.display = 'none';
+  scadaDiv.style.display = 'none';
+  shutdownDiv.style.display = 'none';
+  commentBox.textContent = '';
+  fullCommentBox.style.display = 'none';
+  fullCommentBox.textContent = '';
+  usernameText.textContent = '';
+  passwordText.textContent = '';
+
+  btn.disabled = true;
+  let step = 0;
+
+  function animateTyping(element, text, callback) {
+    element.textContent = '';
+    let i = 0;
+    let interval = setInterval(() => {
+      element.textContent += text[i];
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        if (callback) callback();
+      }
+    }, 120);
+  }
+
+  function highlightNode(index) {
+    nodes.forEach(n => n.style.opacity = 0.3);
+    if (nodes[index]) nodes[index].style.opacity = 1;
+  }
+
+  function showStep() {
+    switch(step) {
+      case 0:
+        highlightNode(0);
+        vpnLoginDiv.style.display = 'block';
+        commentBox.textContent = messages[step];
+        animateTyping(usernameText, "pipeline_user", () => {
+          animateTyping(passwordText, "••••••••", () => {
+            setTimeout(() => {
+              vpnLoginDiv.style.display = 'none';
+              step++;
+              showStep();
+            }, 1500);
+          });
+        });
+        break;
+
+      case 1:
+        highlightNode(1);
+        infectionDiv.style.display = 'flex';
+        commentBox.textContent = messages[step];
+        setTimeout(() => {
+          infectionDiv.style.display = 'none';
+          step++;
+          showStep();
+        }, 3500);
+        break;
+
+      case 2:
+        highlightNode(2);
+        scadaDiv.style.display = 'flex';
+        commentBox.textContent = messages[step];
+        setTimeout(() => {
+          scadaDiv.style.display = 'none';
+          step++;
+          showStep();
+        }, 3500);
+        break;
+
+      case 3:
+        highlightNode(3);
+        shutdownDiv.style.display = 'flex';
+        commentBox.textContent = messages[step];
+        setTimeout(() => {
+          commentBox.textContent = '';
+          fullCommentBox.style.display = 'block';
+          fullCommentBox.textContent = fullComment;
+          btn.disabled = false;
+        }, 3000);
+        break;
+    }
+  }
+
+  showStep();
+}
+
+
+//
+// === GPS jamming demo ===
+//
+function runGPSAttack(containerId, btn) {
+  const container = document.getElementById(containerId);
+  const nodes = container.querySelectorAll('.chain .node');
+  const commentBox = container.querySelector('.comment-box');
+  const fullCommentBox = container.querySelector('.full-comment');
+
+  const gpsDiv = container.querySelector('.gps-signal');
+  const spoofDiv = container.querySelector('.spoofing-device');
+  const fakeLocDiv = container.querySelector('.spoofed-location');
+  const errorDiv = container.querySelector('.nav-error');
+
+  const messages = [
+    "Satellite sends accurate GPS signal...",
+    "Spoofing device jams and injects fake location...",
+    "Aircraft and ship receive counterfeit GPS coordinates...",
+    "Navigation errors occur — danger ahead!"
+  ];
+
+  const fullComment = fullCommentBox.innerHTML;
+
+  // Reset state
+  nodes.forEach(n => n.style.opacity = 0.3);
+  [gpsDiv, spoofDiv, fakeLocDiv, errorDiv].forEach(d => d.style.display = "none");
+  commentBox.textContent = "";
+  fullCommentBox.style.display = "none";
+  fullCommentBox.textContent = "";
+  btn.disabled = true;
+
+  let step = 0;
+
+  function highlightNode(index) {
+    nodes.forEach(n => n.style.opacity = 0.3);
+    if (nodes[index]) nodes[index].style.opacity = 1;
+  }
+
+  function showStep() {
+    switch (step) {
+      case 0:
+        highlightNode(0);
+        gpsDiv.style.display = 'block';
+        commentBox.textContent = messages[step];
+        setTimeout(() => {
+          gpsDiv.style.display = 'none';
+          step++;
+          showStep();
+        }, 2500);
+        break;
+
+      case 1:
+        highlightNode(1);
+        spoofDiv.style.display = 'block';
+        commentBox.textContent = messages[step];
+        setTimeout(() => {
+          spoofDiv.style.display = 'none';
+          step++;
+          showStep();
+        }, 2500);
+        break;
+
+      case 2:
+        highlightNode(2);
+        fakeLocDiv.style.display = 'block';
+        commentBox.textContent = messages[step];
+        setTimeout(() => {
+          fakeLocDiv.style.display = 'none';
+          step++;
+          showStep();
+        }, 2500);
+        break;
+
+      case 3:
+        highlightNode(3);
+        errorDiv.style.display = 'block';
+        commentBox.textContent = messages[step];
+        setTimeout(() => {
+          commentBox.textContent = "";
+          fullCommentBox.style.display = "block";
+          fullCommentBox.innerHTML = fullComment;
+          btn.disabled = false;
+        }, 3000);
+        break;
+    }
+  }
+
+  showStep();
 }
