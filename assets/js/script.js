@@ -258,80 +258,49 @@ function runPipelineAttack(containerId, btn) {
   const nodes = container.querySelectorAll('.chain .node');
   const commentBox = container.querySelector('.comment-box');
   const fullCommentBox = container.querySelector('.full-comment');
-  const vpnLoginDiv = container.querySelector('.vpn-login');
-  const infectionDiv = container.querySelector('.infection-spread');
-  const scadaDiv = container.querySelector('.scada-compromise');
-  const shutdownDiv = container.querySelector('.pipeline-shutdown');
   const usernameText = container.querySelector('#username-text');
   const passwordText = container.querySelector('#password-text');
 
-  const messages = [
-    "Attacker logs in with stolen VPN credentials...",
-    "Malware spreads across internal servers and workstations...",
-    "SCADA controllers compromised; alarms triggered...",
-    "Pipeline operations halted; system shutdown initiated."
+  const steps = [
+    { containerClass: 'vpn-login', lines: 3 },
+    { containerClass: 'infection-spread', lines: 2 },
+    { containerClass: 'scada-compromise', lines: 2 },
+    { containerClass: 'pipeline-shutdown', lines: 2 }
   ];
 
   const fullComment = container.querySelector('#full-comment-pipeline p').innerHTML;
 
-  // Reset everything
+  // Reset state
   nodes.forEach(n => {
     n.style.opacity = 0.3;
     n.classList.remove('completed', 'active');
   });
-  [vpnLoginDiv, infectionDiv, scadaDiv, shutdownDiv].forEach(div => {
-    div.style.opacity = 0;
-    div.style.display = 'none';
+  fullCommentBox.style.display = "none";
+  fullCommentBox.textContent = "";
+  commentBox.textContent = "";
+  usernameText.textContent = "";
+  passwordText.textContent = "";
+
+  // Hide and reset opacity for all blocks and their children
+  steps.forEach(s => {
+    const block = container.querySelector(`.${s.containerClass}`);
+    block.style.display = "none";
+    block.querySelectorAll('div').forEach(div => div.style.opacity = 0);
   });
-  commentBox.textContent = '';
-  fullCommentBox.style.opacity = 0;
-  fullCommentBox.style.display = 'none';
-  fullCommentBox.textContent = '';
-  usernameText.textContent = '';
-  passwordText.textContent = '';
 
   btn.disabled = true;
   btn.textContent = 'Running...';
-  let step = 0;
 
-  function fadeIn(element, duration = 500, display = 'flex') {
-    element.style.opacity = 0;
-    element.style.display = display;
-    let opacity = 0;
-    const interval = 50;
-    const increment = interval / duration;
-    function anim() {
-      opacity += increment;
-      if (opacity >= 1) {
-        element.style.opacity = 1;
-      } else {
-        element.style.opacity = opacity;
-        setTimeout(anim, interval);
-      }
-    }
-    anim();
-  }
+  let stepIndex = 0;
+  let lineIndex = 0;
 
-  function animateTyping(element, text, callback) {
-    element.textContent = '';
-    let i = 0;
-    let interval = setInterval(() => {
-      element.textContent += text[i];
-      i++;
-      if (i >= text.length) {
-        clearInterval(interval);
-        if (callback) callback();
-      }
-    }, 60); // швидше друкуємо
-  }
-
-  function updateNodesHighlight(index) {
+  function highlightNodes(idx) {
     nodes.forEach((n, i) => {
-      if (i < index) {
+      if (i < idx) {
         n.style.opacity = 0.7;
         n.classList.add('completed');
         n.classList.remove('active');
-      } else if (i === index) {
+      } else if (i === idx) {
         n.style.opacity = 1;
         n.classList.add('active');
         n.classList.remove('completed');
@@ -342,58 +311,84 @@ function runPipelineAttack(containerId, btn) {
     });
   }
 
-  function showStep() {
-    updateNodesHighlight(step);
+  function animateTyping(element, text, speed = 60) {
+    return new Promise(resolve => {
+      element.textContent = '';
+      let i = 0;
+      function step() {
+        if (i < text.length) {
+          element.textContent += text[i];
+          i++;
+          setTimeout(step, speed);
+        } else {
+          resolve();
+        }
+      }
+      step();
+    });
+  }
 
-    // Показуємо потрібні блоки з анімацією
-    if (step === 0) fadeIn(vpnLoginDiv);
-    if (step === 1) fadeIn(infectionDiv);
-    if (step === 2) fadeIn(scadaDiv);
-    if (step === 3) fadeIn(shutdownDiv);
+  async function showNextLine() {
+    if (stepIndex >= steps.length) {
+      // Finished all steps
+      commentBox.textContent = "";
+      fullCommentBox.style.display = "block";
+      fullCommentBox.style.opacity = 0;
+      fullCommentBox.innerHTML = fullComment;
+      let opacity = 0;
+      const fadeIn = setInterval(() => {
+        opacity += 0.05;
+        fullCommentBox.style.opacity = opacity;
+        if (opacity >= 1) clearInterval(fadeIn);
+      }, 40);
 
-    if (step === 0) {
-      animateTyping(commentBox, messages[step], () => {
-        animateTyping(usernameText, "pipeline_user", () => {
-          animateTyping(passwordText, "••••••••", () => {
-            setTimeout(() => {
-              step++;
-              showStep();
-            }, 1200);
-          });
-        });
-      });
-    } else if (step < messages.length - 1) {
-      animateTyping(commentBox, messages[step], () => {
-        setTimeout(() => {
-          step++;
-          showStep();
-        }, 2500);
-      });
+      btn.disabled = false;
+      btn.textContent = 'Run Pipeline Attack';
+      return;
+    }
+
+    const step = steps[stepIndex];
+    const block = container.querySelector(`.${step.containerClass}`);
+    const lines = block.querySelectorAll('div');
+
+    if (lineIndex === 0) {
+      block.style.display = 'flex';
+      block.style.flexDirection = 'column';
+      block.style.gap = '6px';
+    }
+
+    if (lineIndex < step.lines) {
+      // Animate showing current line
+      lines[lineIndex].style.opacity = 1;
+
+      // Для VPN login кроку оновимо коментар або інші поля:
+      if (step.containerClass === 'vpn-login') {
+        if (lineIndex === 0) {
+          await animateTyping(commentBox, "Attacker logs in with stolen VPN credentials...");
+        } else if (lineIndex === 1) {
+          await animateTyping(usernameText, "pipeline_user", 40);
+        } else if (lineIndex === 2) {
+          await animateTyping(passwordText, "••••••••", 80);
+        }
+      } else {
+        // В інших кроках просто виводимо текст у commentBox
+        await animateTyping(commentBox, lines[lineIndex].textContent);
+      }
+
+      lineIndex++;
+      setTimeout(showNextLine, 1000);
     } else {
-      // Останній крок
-      animateTyping(commentBox, messages[step], () => {
-        setTimeout(() => {
-          commentBox.textContent = '';
-          fullCommentBox.style.display = 'block';
-          fullCommentBox.style.opacity = 0;
-          let opacity = 0;
-          let interval = setInterval(() => {
-            opacity += 0.05;
-            fullCommentBox.style.opacity = opacity;
-            if (opacity >= 1) {
-              clearInterval(interval);
-            }
-          }, 40);
-          fullCommentBox.textContent = fullComment;
-          btn.disabled = false;
-          btn.textContent = 'Run Pipeline Attack';
-        }, 1500);
-      });
+      highlightNodes(stepIndex);
+      stepIndex++;
+      lineIndex = 0;
+      setTimeout(showNextLine, 1000);
     }
   }
 
-  showStep();
+  showNextLine();
 }
+
+
 //
 // === GPS jamming demo ===
 //
@@ -403,75 +398,90 @@ function runGPSAttack(containerId, btn) {
   const commentBox = container.querySelector('.comment-box');
   const fullCommentBox = container.querySelector('.full-comment');
 
-  const gpsDiv = container.querySelector('.gps-signal');
-  const spoofDiv = container.querySelector('.spoofing-device');
-  const fakeLocDiv = container.querySelector('.spoofed-location');
-  const errorDiv = container.querySelector('.nav-error');
-
-  const messages = [
-    "Satellite sends accurate GPS signal...",
-    "Spoofing device jams and injects fake location...",
-    "Aircraft and ship receive counterfeit GPS coordinates...",
-    "Navigation errors occur — danger ahead!"
+  const steps = [
+    { containerClass: 'gps-signal', lines: 1 },
+    { containerClass: 'spoofing-device', lines: 2 },
+    { containerClass: 'spoofed-location', lines: 2 },
+    { containerClass: 'nav-error', lines: 2 }
   ];
 
   const fullComment = fullCommentBox.innerHTML;
 
-  // Reset state
+  // Скидаємо стан
   nodes.forEach(n => {
     n.style.opacity = 0.3;
-    n.classList.remove('completed');
-    n.classList.remove('active');
+    n.classList.remove('completed', 'active');
   });
-  [gpsDiv, spoofDiv, fakeLocDiv, errorDiv].forEach(d => d.style.display = "none");
-  commentBox.textContent = "";
   fullCommentBox.style.display = "none";
   fullCommentBox.textContent = "";
+  commentBox.textContent = "";
   btn.disabled = true;
 
-  let step = 0;
+  // Сховати всі рядки
+  steps.forEach(s => {
+    const block = container.querySelector(`.${s.containerClass}`);
+    block.style.display = "none";
+    const items = block.querySelectorAll('div');
+    items.forEach(i => i.style.opacity = 0);
+  });
 
-  function updateNodesHighlight(index) {
+  let stepIndex = 0;
+  let lineIndex = 0;
+
+  function highlightNodes(idx) {
     nodes.forEach((n, i) => {
-      if (i < index) {
-        n.style.opacity = 0.7;    // Пройдені кроки
+      if (i < idx) {
+        n.style.opacity = 0.7;
         n.classList.add('completed');
         n.classList.remove('active');
-      } else if (i === index) {
-        n.style.opacity = 1;      // Активний крок
+      } else if (i === idx) {
+        n.style.opacity = 1;
         n.classList.add('active');
         n.classList.remove('completed');
       } else {
-        n.style.opacity = 0.3;    // Майбутні кроки
-        n.classList.remove('completed');
-        n.classList.remove('active');
+        n.style.opacity = 0.3;
+        n.classList.remove('completed', 'active');
       }
     });
   }
 
-  function showStep() {
-    updateNodesHighlight(step);
+  function showNextLine() {
+    if (stepIndex >= steps.length) {
+      // Всі кроки показані
+      commentBox.textContent = "";
+      fullCommentBox.style.display = "block";
+      fullCommentBox.innerHTML = fullComment;
+      btn.disabled = false;
+      return;
+    }
 
-    // Показати всі блоки до поточного кроку включно
-    if (step >= 0) gpsDiv.style.display = 'flex';
-    if (step >= 1) spoofDiv.style.display = 'flex';
-    if (step >= 2) fakeLocDiv.style.display = 'flex';
-    if (step >= 3) errorDiv.style.display = 'flex';
+    const step = steps[stepIndex];
+    const block = container.querySelector(`.${step.containerClass}`);
+    const items = block.querySelectorAll('div');
 
-    commentBox.textContent = messages[step];
+    if (lineIndex === 0) {
+      // Показуємо блок
+      block.style.display = 'flex';
+      block.style.flexDirection = 'column';
+      block.style.gap = '6px';
+    }
 
-    setTimeout(() => {
-      if (step < 3) {
-        step++;
-        showStep();
-      } else {
-        commentBox.textContent = "";
-        fullCommentBox.style.display = "block";
-        fullCommentBox.innerHTML = fullComment;
-        btn.disabled = false;
-      }
-    }, step === 0 ? 2500 : 3000);
+    if (lineIndex < step.lines) {
+      // Показуємо наступний рядок анімацією
+      items[lineIndex].style.opacity = 1;
+      commentBox.textContent = items[lineIndex].textContent;
+
+      lineIndex++;
+
+      setTimeout(showNextLine, 3000);
+    } else {
+      // Крок завершено, переходимо до наступного
+      highlightNodes(stepIndex);
+      stepIndex++;
+      lineIndex = 0;
+      setTimeout(showNextLine, 1000);
+    }
   }
 
-  showStep();
+  showNextLine();
 }

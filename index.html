@@ -22,9 +22,9 @@
 </section>
 
 <section id="attacks">
-Attack Chain Visualizations</h3>
+  <h3 class="section-title">Attack Chain Visualizations</h3>
 
-        <!-- Phishing Attack -->
+     <!-- Phishing Attack -->
         <div class="attack-visual" id="attack-it">
             <h4>🎯 QR Phishing Attack – Deutsche Bahn (2022)</h4>
             <div class="chain">
@@ -81,27 +81,26 @@ Attack Chain Visualizations</h3>
             </div>
 
             <div class="pipeline-demo">
-  <div class="vpn-login" style="display:none;">
-    <div class="login-box">
-      <div><strong>Username:</strong> <span class="typed-text" id="username-text"></span></div>
-      <div><strong>Password:</strong> <span class="typed-text" id="password-text"></span></div>
-    </div>
-  </div>
+ <div class="vpn-login" style="display:none;">
+  <div class="login-line">🔑 Attacker logs in with stolen VPN credentials</div>
+  <div class="login-creds">👤 Username: <span id="username-text"></span></div>
+  <div class="login-creds">🔒 Password: <span id="password-text"></span></div>
+</div>
 
-  <div class="infection-spread" style="display:none;">
-    <div class="server infected">🖥️ Server <strong>Infected</strong></div>
-    <div class="workstation infected">💻 Workstation <strong>Infected</strong></div>
-  </div>
+<div class="infection-spread" style="display:none;">
+  <div class="infection-line">🖥️ Server <strong>Infected</strong></div>
+  <div class="infection-line">💻 Workstation <strong>Infected</strong></div>
+</div>
 
-  <div class="scada-compromise" style="display:none;">
-    <div class="controller normal">Pump Control Panel</div>
-    <div class="controller alert">🚨 <strong>Alarm Active!</strong></div>
-  </div>
+<div class="scada-compromise" style="display:none;">
+  <div class="scada-line">Pump Control Panel</div>
+  <div class="scada-line alert">🚨 <strong>Alarm Active!</strong></div>
+</div>
 
-  <div class="pipeline-shutdown" style="display:none;">
-    <div class="pipeline-crossed">🚫 <strong>Pipeline Stopped</strong></div>
-    <div class="control-panel">System <em>Shutdown</em></div>
-  </div>
+<div class="pipeline-shutdown" style="display:none;">
+  <div class="shutdown-line">🚫 <strong>Pipeline Stopped</strong></div>
+  <div class="shutdown-line">System <em>Shutdown</em></div>
+</div>
 </div>
 
 
@@ -109,8 +108,10 @@ Attack Chain Visualizations</h3>
 
             <div class="comment-box"></div>
             <div id="full-comment-pipeline" class="full-comment" style="display:none;">
-                <h5>Incident Overview</h5>
-                <p>The attack started with compromised VPN credentials, spreading malware in the network, controlling SCADA systems, and halting pipeline operations causing severe impact.</p>
+                <p>In 2021, a ransomware attack targeted a major U.S. pipeline operator. Attackers gained access using stolen VPN credentials and halted pipeline operations.<br><br>
+<strong>Damage:</strong> Fuel shortages, supply chain disruption, and financial losses.<br>
+<strong>Mitigation:</strong> Enforce VPN hardening, monitor network access, and segment critical systems.
+</p>
             </div>
         </div>
 
@@ -127,37 +128,40 @@ Attack Chain Visualizations</h3>
                 <span class="node"><img src="./assets/images/nav-error.png" alt="Navigation Failure" class="icon-img" /></span>
             </div>
 
-            <div class="gps-demo">
-                <div class="gps-signal" style="display:none;">
-                    <div class="satellite">🛰️ Sending signal...</div>
-                    <div class="signal-line">~~~~~</div>
-                </div>
+<div class="gps-demo">
+  <div class="gps-signal" style="display:none;">
+    <div class="signal-line-item">🛰️ Satellite sending accurate GPS signal...</div>
+  </div>
 
-                <div class="spoofing-device" style="display:none;">
-                    <div class="jammer">📡 Jammer intercepts</div>
-                    <div class="fake-signal">🛰️ ➡️ 📍 Fake coordinates injected</div>
-                </div>
+  <div class="spoofing-device" style="display:none;">
+    <div class="signal-line-item">📡 Spoofing device jamming signal...</div>
+    <div class="signal-line-item">🛰️ Fake location injected</div>
+  </div>
 
-                <div class="spoofed-location" style="display:none;">
-                    <div class="vehicle">✈️ Aircraft: <span class="coords">Lat: 54.000, Lon: 19.000</span></div>
-                    <div class="vehicle">🚢 Ship: <span class="coords">Lat: 54.001, Lon: 19.001</span></div>
-                </div>
+  <div class="spoofed-location" style="display:none;">
+    <div class="vehicle-location">✈️ Aircraft location spoofed to <span class="coords">Lat: 54.000, Lon: 19.000</span></div>
+    <div class="vehicle-location">🚢 Ship location spoofed to <span class="coords">Lat: 54.001, Lon: 19.001</span></div>
+  </div>
 
-                <div class="nav-error" style="display:none;">
-                    <div class="warning">⚠️ Aircraft off-course! Danger ahead!</div>
-                    <div class="warning">⚠️ Ship veering toward restricted zone!</div>
-                </div>
-            </div>
+  <div class="nav-error" style="display:none;">
+    <div class="warning-item">⚠️ Aircraft off-course! Danger ahead!</div>
+    <div class="warning-item">⚠️ Ship veering toward restricted zone!</div>
+  </div>
+</div>
+
 
             <button onclick="runGPSAttack('attack-gps', this)">Start Attack Demo</button>
 
             <div class="comment-box"></div>
             <div id="full-comment-gps" class="full-comment" style="display:none;">
-                <h5>Incident Summary</h5>
-                <p>Signal jamming disrupted GPS signals affecting aviation and maritime navigation, leading to increased risk of accidents and delays.</p>
+                <p>In 2023, GPS spoofing incidents disrupted aircraft and ship navigation across Scandinavia and the Baltics. Fake signals misled onboard systems into reporting false positions.<br><br>
+<strong>Damage:</strong> Navigation errors, safety risks, and operational delays.<br>
+<strong>Mitigation:</strong> Use signal authentication, cross-check location sources, and deploy anomaly detection systems.
+</p>
             </div>
         </div>
 </section>
+
 
 <section id="eu-regulations">
   <h2>3. EU Regulations Timeline</h2>

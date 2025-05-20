@@ -195,38 +195,40 @@ section p {
     width: 80%;
 }
 
-/* ============================
+/* =========================
    Візуалізація атак (attack visual)
-   ============================ */
+   ========================= */
 
 .attack-visual {
     position: relative;
-    margin: 20px auto 40px;
-    padding: 15px;
+    margin: 15px auto 30px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    max-width: 700px;
+    max-width: 680px;
     font-family: Arial, sans-serif;
+    font-size: 14px; /* Зменшено базовий розмір шрифту */
 }
 
 .chain {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 15px;
+    gap: 10px;
+    margin-bottom: 12px;
     user-select: none;
-    font-size: 18px;
+    font-size: 16px; /* Зменшено */
 }
 
 .node {
-    padding: 8px 12px;
+    padding: 6px 10px; /* Зменшено відступи */
     border-radius: 6px;
     background-color: #eee;
     opacity: 0.3;
     transition: opacity 0.4s ease;
     font-weight: 600;
     user-select: none;
+    font-size: 14px; /* Зменшено */
 }
 
 .node.active {
@@ -245,21 +247,24 @@ section p {
     opacity: 0.3;
     transition: opacity 0.4s ease;
     user-select: none;
+    font-size: 16px; /* Зменшено */
 }
 
 button {
     user-select: none;
+    font-size: 14px;
+    padding: 6px 10px;
 }
 
 /* Повідомлення та коментарі */
 .comment-box {
-  min-height: 26px;
+  min-height: 24px;
   font-style: italic;
-  margin-bottom: 12px;
-  color: #222; /* темніший текст */
-  font-size: 15px;
-  background-color: #f0f0f0; /* трохи темніший фон */
-  padding: 10px 15px; /* відступи */
+  margin-bottom: 10px;
+  color: #222;
+  font-size: 13px; /* Зменшено */
+  background-color: #f0f0f0;
+  padding: 8px 12px; /* Зменшено */
   border-radius: 6px;
   max-width: 100%;
   overflow-wrap: break-word;
@@ -267,34 +272,25 @@ button {
 }
 
 .full-comment {
-  background: #dce6f7; /* світло-блакитний фон для контрасту */
-  padding: 12px 18px;
+  background: #dce6f7;
+  padding: 10px 15px; /* Зменшено */
   border-radius: 8px;
-  font-size: 15px;
-  line-height: 1.5;
-  color: #222; /* темніший текст */
-  display: block; /* показуємо блок */
+  font-size: 13px; /* Зменшено */
+  line-height: 1.4;
+  color: #222;
+  display: block;
   max-width: 100%;
   overflow-wrap: break-word;
   box-sizing: border-box;
-  overflow-y: auto; /* прокрутка, якщо текст занадто великий */
-  max-height: 200px; /* обмежуємо висоту */
+  overflow-y: auto;
+  max-height: 180px; /* Трохи зменшено */
 }
-
-/* Щоб контейнер атаки не виходив за межі */
-.attack-visual {
-  max-width: 700px;
-  margin: 20px auto;
-  font-family: Arial, sans-serif;
-  overflow: hidden; /* обрізаємо вміст, якщо він виходить */
-}
-
 
 /* Маркер руху */
 .moving-marker {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 16px; /* Зменшено */
+    height: 16px; /* Зменшено */
     background: #007bff;
     border-radius: 50%;
     pointer-events: none;
@@ -302,14 +298,11 @@ button {
     display: none;
 }
 
-/* ============================
-   Демонстрація фішингу (Phishing demo)
-   ============================ */
-
+/* Демонстрація фішингу */
 .phishing-demo {
-    margin-top: 20px;
+    margin-top: 18px;
     display: flex;
-    gap: 40px;
+    gap: 30px; /* Зменшено */
     align-items: center;
     justify-content: flex-start;
     user-select: none;
@@ -317,38 +310,31 @@ button {
 
 .qr-code-container {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 100px; /* Зменшено */
+    height: 100px; /* Зменшено */
     border: 2px solid #007bff;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     background: white;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .qr-code {
-    width: 100%;
-    height: 100%;
+    width: 90%; /* Зменшено */
+    height: 90%;
     object-fit: contain;
 }
 
 .scanner-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: rgba(0, 123, 255, 0.7);
-    transform: translateY(-140px);
-    pointer-events: none;
-    transition: transform 2s linear;
+    height: 3px; /* Зменшено */
 }
 
+/* Форми та повідомлення */
 .login-form {
-    font-size: 14px;
+    font-size: 13px; /* Зменшено */
     color: #222;
 }
 
@@ -358,46 +344,45 @@ button {
     letter-spacing: 0.1em;
     user-select: none;
     transition: color 0.4s ease;
+    font-size: 14px; /* Зменшено */
 }
 
 .data-stolen-msg {
-    font-size: 16px;
+    font-size: 14px; /* Зменшено */
     color: #d9534f;
     font-weight: 700;
-    margin-top: 10px;
+    margin-top: 8px;
     user-select: none;
 }
 
-/* ============================
-   Демонстрації Pipeline і GPS
-   ============================ */
+/* Демонстрації Pipeline і GPS */
 
 .pipeline-demo,
 .gps-demo {
-    margin-top: 15px;
+    margin-top: 12px;
     display: flex;
-    gap: 15px;
+    gap: 12px; /* Зменшено */
     flex-wrap: nowrap;
-    font-size: 16px;
-    color: #2c2c2c;  /* трохи темніший текст для кращої читабельності */
+    font-size: 14px; /* Зменшено */
+    color: #2c2c2c;
     user-select: none;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .pipeline-demo > div,
 .gps-demo > div {
-    padding: 14px 18px;
-    background: #f7f7f7;  /* світліший фон для кращого контрасту з текстом */
-    border-radius: 12px;
-    opacity: 0.35; /* трохи більша прозорість для неактивних блоків */
+    padding: 12px 16px; /* Зменшено */
+    background: #f7f7f7;
+    border-radius: 10px;
+    opacity: 0.35;
     transition: opacity 0.6s ease, box-shadow 0.3s ease;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
 
 .pipeline-demo > div.active,
 .gps-demo > div.active {
     opacity: 1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     background-color: #ffffff;
 }
 
@@ -411,21 +396,21 @@ button {
 .fake-signal,
 .vehicle,
 .warning {
-    padding: 12px 20px;
-    margin: 10px auto;
+    padding: 10px 16px; /* Зменшено */
+    margin: 8px auto; /* Зменшено */
     border-radius: 8px;
     background-color: #f9f9f9;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    max-width: 420px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.08);
+    max-width: 400px; /* Трохи зменшено */
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px; /* Зменшено */
     user-select: text;
 }
 
 .fake-signal {
-    background-color: #fff8db; /* легкий жовтуватий тон */
+    background-color: #fff8db;
     color: #856404;
-    box-shadow: 0 0 10px #ffec99;
+    box-shadow: 0 0 8px #ffec99;
 }
 
 .coords {
@@ -433,44 +418,16 @@ button {
     font-family: monospace;
     font-weight: 700;
     user-select: text;
+    font-size: 13px; /* Зменшено */
 }
 
 .warning {
     background-color: #f8d7da;
     color: #721c24;
-    box-shadow: 0 0 10px #c9302c;
+    box-shadow: 0 0 8px #c9302c;
     animation: pulse-alert 1.5s infinite;
-    font-size: 17px;
+    font-size: 15px; /* Зменшено */
     font-weight: 700;
-}
-
-/* =========================
-   Анімація пульсації тривог
-   ========================= */
-
-@keyframes pulse-alert {
-    0%, 100% {
-        box-shadow: 0 0 14px #a94442;
-    }
-    50% {
-        box-shadow: 0 0 28px #a94442;
-    }
-}
-
-/* Блоки всередині pipeline-demo */
-
-.infection-spread,
-.scada-compromise,
-.pipeline-shutdown,
-.vpn-login,
-.gps-signal,
-.spoofing-device,
-.spoofed-location,
-.nav-error {
-    display: flex;
-    margin-top: 12px;
-    gap: 18px;
-    flex-wrap: nowrap;
 }
 
 /* Сервер, робоча станція, контролери */
@@ -478,13 +435,13 @@ button {
 .server,
 .workstation,
 .controller {
-    padding: 14px 22px;
+    padding: 12px 18px; /* Зменшено */
     border-radius: 10px;
     background-color: #fafafa;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: #333;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px; /* Зменшено */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -493,67 +450,75 @@ button {
 .infected {
     background-color: #ffe6e6;
     color: #b30000;
-    box-shadow: 0 0 12px #e03a3a;
+    box-shadow: 0 0 10px #e03a3a;
 }
 
 .controller.alert {
     background-color: #f2dede;
     color: #a94442;
-    box-shadow: 0 0 16px #a94442;
+    box-shadow: 0 0 14px #a94442;
     animation: pulse-alert 1.5s infinite;
-    font-size: 17px;
+    font-size: 15px; /* Зменшено */
 }
 
 .pipeline-shutdown {
     text-align: center;
     flex-direction: column;
-    padding: 18px 22px;
+    padding: 16px 18px; /* Зменшено */
     background-color: #fdecea;
     border-radius: 14px;
-    box-shadow: 0 0 20px rgba(185, 28, 28, 0.6);
+    box-shadow: 0 0 16px rgba(185, 28, 28, 0.6);
     color: #a94442;
 }
 
 .pipeline-crossed {
-    font-size: 28px;
+    font-size: 24px; /* Зменшено */
     color: #a94442;
     position: relative;
     font-weight: 800;
-    margin-bottom: 8px;
+    margin-bottom: 6px; /* Зменшено */
 }
 
 .control-panel {
-    margin-top: 10px;
+    margin-top: 8px; /* Зменшено */
     font-weight: 700;
     color: #d9534f;
     background-color: #f9e6e6;
-    padding: 10px 14px;
+    padding: 8px 12px; /* Зменшено */
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 16px; /* Зменшено */
 }
 
-.section-box {
-    margin-bottom: 40px;
-}
-
-.graph-box {
-    height: 350px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-}
-
-/* =========================
-   Картинки в вузлах
-   ========================= */
-
+/* Картинки в вузлах */
 .icon-img {
-    width: 40px;
-    height: 40px;
+    width: 30px; /* Зменшено */
+    height: 30px;
     object-fit: contain;
 }
 
 .qr-img {
-    width: 70px;
-    height: 70px;
+    width: 60px; /* Зменшено */
+    height: 60px;
     object-fit: contain;
+}
+
+
+.scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* зменшено */
+    background: rgba(0, 123, 255, 0.7);
+    pointer-events: none;
+    animation: scan-line 2s linear infinite;
+}
+
+@keyframes scan-line {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
 }
