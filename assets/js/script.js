@@ -253,10 +253,6 @@ const fullComment = `In 2022, Deutsche Bahn users were tricked by malicious QR c
   animateStep();
 }
 
-
-//
-// === Pipeline demo ===
-//
 function runPipelineAttack(containerId, btn) {
   const container = document.getElementById(containerId);
   const nodes = container.querySelectorAll('.chain .node');
@@ -281,21 +277,40 @@ function runPipelineAttack(containerId, btn) {
   // Reset everything
   nodes.forEach(n => {
     n.style.opacity = 0.3;
-    n.classList.remove('completed');
-    n.classList.remove('active');
+    n.classList.remove('completed', 'active');
   });
-  vpnLoginDiv.style.display = 'none';
-  infectionDiv.style.display = 'none';
-  scadaDiv.style.display = 'none';
-  shutdownDiv.style.display = 'none';
+  [vpnLoginDiv, infectionDiv, scadaDiv, shutdownDiv].forEach(div => {
+    div.style.opacity = 0;
+    div.style.display = 'none';
+  });
   commentBox.textContent = '';
+  fullCommentBox.style.opacity = 0;
   fullCommentBox.style.display = 'none';
   fullCommentBox.textContent = '';
   usernameText.textContent = '';
   passwordText.textContent = '';
 
   btn.disabled = true;
+  btn.textContent = 'Running...';
   let step = 0;
+
+  function fadeIn(element, duration = 500, display = 'flex') {
+    element.style.opacity = 0;
+    element.style.display = display;
+    let opacity = 0;
+    const interval = 50;
+    const increment = interval / duration;
+    function anim() {
+      opacity += increment;
+      if (opacity >= 1) {
+        element.style.opacity = 1;
+      } else {
+        element.style.opacity = opacity;
+        setTimeout(anim, interval);
+      }
+    }
+    anim();
+  }
 
   function animateTyping(element, text, callback) {
     element.textContent = '';
@@ -307,23 +322,22 @@ function runPipelineAttack(containerId, btn) {
         clearInterval(interval);
         if (callback) callback();
       }
-    }, 120);
+    }, 60); // швидше друкуємо
   }
 
   function updateNodesHighlight(index) {
     nodes.forEach((n, i) => {
       if (i < index) {
-        n.style.opacity = 0.7;    // Пройдені кроки
+        n.style.opacity = 0.7;
         n.classList.add('completed');
         n.classList.remove('active');
       } else if (i === index) {
-        n.style.opacity = 1;      // Активний крок
+        n.style.opacity = 1;
         n.classList.add('active');
         n.classList.remove('completed');
       } else {
-        n.style.opacity = 0.3;    // Майбутні кроки
-        n.classList.remove('completed');
-        n.classList.remove('active');
+        n.style.opacity = 0.3;
+        n.classList.remove('completed', 'active');
       }
     });
   }
@@ -331,51 +345,55 @@ function runPipelineAttack(containerId, btn) {
   function showStep() {
     updateNodesHighlight(step);
 
-    // Покажемо всі попередні візуальні блоки разом з поточним
-    if (step >= 0) vpnLoginDiv.style.display = 'flex';
-    if (step >= 1) infectionDiv.style.display = 'flex';
-    if (step >= 2) scadaDiv.style.display = 'flex';
-    if (step >= 3) shutdownDiv.style.display = 'flex';
+    // Показуємо потрібні блоки з анімацією
+    if (step === 0) fadeIn(vpnLoginDiv);
+    if (step === 1) fadeIn(infectionDiv);
+    if (step === 2) fadeIn(scadaDiv);
+    if (step === 3) fadeIn(shutdownDiv);
 
-    switch(step) {
-      case 0:
-        commentBox.textContent = messages[step];
+    if (step === 0) {
+      animateTyping(commentBox, messages[step], () => {
         animateTyping(usernameText, "pipeline_user", () => {
           animateTyping(passwordText, "••••••••", () => {
             setTimeout(() => {
               step++;
               showStep();
-            }, 1500);
+            }, 1200);
           });
         });
-        break;
-
-      case 1:
-      case 2:
-        commentBox.textContent = messages[step];
+      });
+    } else if (step < messages.length - 1) {
+      animateTyping(commentBox, messages[step], () => {
         setTimeout(() => {
           step++;
           showStep();
-        }, 3500);
-        break;
-
-      case 3:
-        commentBox.textContent = messages[step];
+        }, 2500);
+      });
+    } else {
+      // Останній крок
+      animateTyping(commentBox, messages[step], () => {
         setTimeout(() => {
           commentBox.textContent = '';
           fullCommentBox.style.display = 'block';
+          fullCommentBox.style.opacity = 0;
+          let opacity = 0;
+          let interval = setInterval(() => {
+            opacity += 0.05;
+            fullCommentBox.style.opacity = opacity;
+            if (opacity >= 1) {
+              clearInterval(interval);
+            }
+          }, 40);
           fullCommentBox.textContent = fullComment;
           btn.disabled = false;
-        }, 3000);
-        break;
+          btn.textContent = 'Run Pipeline Attack';
+        }, 1500);
+      });
     }
   }
 
   showStep();
 }
-
-
-
 //
 // === GPS jamming demo ===
 //
