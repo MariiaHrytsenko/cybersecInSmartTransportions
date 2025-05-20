@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity in Smart Transportation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.0/mapbox-gl.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vis-network@9.1.0/dist/vis-network.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Cybersecurity in Smart Transportation</h1>
+    </header>
+
+    <main>
+
+        <section id="graph-container" style="height: 500px; width: 100%;"></section>
+
+        <section id="cybersecurity-intro">
+            <h2>Cybersecurity in Transportation Infrastructure</h2>
+        
+            <h3>1. Categories of Systems in Transportation Infrastructure</h3>
+            <p>Transportation infrastructure relies on three main types of systems:</p>
+            <ul>
+                <li><strong>IT (Information Technology)</strong> – information systems that process data (ticketing systems, corporate services, archives).</li>
+                <li><strong>OT (Operational Technology)</strong> – systems that control physical processes (train control automation, SCADA systems in airports).</li>
+                <li><strong>CT (Communication Technology)</strong> – networking technologies for system communication (GPS, satellite communication, V2X communication).</li>
+            </ul>
+        
+            <h3>2. Vulnerabilities in Each Category</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Key Threats</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>IT</strong></td>
+                        <td>Phishing, database attacks, exploits on web services.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OT</strong></td>
+                        <td>Physical threats, manipulation of control signals, remote intrusion in SCADA.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CT</strong></td>
+                        <td>GPS spoofing, communication interception, DDoS attacks on infrastructure.</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <h3>3. Real Cyber Incidents</h3>
+            
+            <h4>GPS Jamming in Europe</h4>
+            <ul>
+                <li><strong>Impact on Aviation:</strong> route deviations, navigation risks.</li>
+                <li><strong>Impact on Logistics:</strong> disruption of road transport, navigation issues for maritime vessels.</li>
+                <li><strong>Incidents:</strong> reported GPS outages in Scandinavia and the Baltic, likely caused by Russian interference.</li>
+            </ul>
+        
+            <h4>Cyber Attack on Colonial Pipeline (2021)</h4>
+            <ul>
+                <li><strong>Impact on OT:</strong> disruption of SCADA systems due to ransomware attack.</li>
+                <li><strong>Business Consequences:</strong> fuel shortages on the East Coast of the USA, millions of dollars in damages.</li>
+                <li><strong>Attack Analysis:</strong> exploitation of a vulnerability in VPN access, lack of network segmentation.</li>
+            </ul>
+        </section>
+        
+
+            <section id="cybersecurity-models">
+                <h2> Моделі кібербезпеки в розумному транспорті</h2>
+                
+                <h3> Військова та політична перспектива</h3>
+                <ul>
+                    <li>Рамки кібербезпеки НАТО для оборонної логістики</li>
+                    <li>Стратегія кібербезпеки ЄС (NIS2 Directive) для транспорту та енергетики</li>
+                    <li>Як Україна будує кібероборону разом з НАТО та ЄС</li>
+                </ul>
+    
+                <h3> Бізнес перспектива</h3>
+                <ul>
+                    <li>ISO 27001 & IEC 62443 – корпоративна кібербезпека для розумного транспорту</li>
+                    <li>Як компанії, як Airbus, Boeing і Tesla, захищають транспортні дані</li>
+                    <li>Управління кіберризиками у ланцюгу постачання (захист логістичних компаній)</li>
+                </ul>
+    
+                <h3>📌 Практичні приклади</h3>
+                <ul>
+                    <li>Як НАТО захищає військову логістику від кіберзагроз</li>
+                    <li>Європейські закони з кібербезпеки для смарт-доріг та залізниць</li>
+                    <li>Як Tesla захищає автономні автомобілі від хакерських атак</li>
+                </ul>
+            </section>
+    
+            <!-- Безпека та конфіденційність в інтелектуальному транспорті -->
+            <section id="security-privacy">
+                <h2>3️⃣ Безпека та конфіденційність в інтелектуальному транспорті</h2>
+    
+                <h3>📌 Військова та політична перспектива</h3>
+                <ul>
+                    <li>Конфіденційність даних у військовому транспорті (C2 системи, зашифроване V2X)</li>
+                    <li>Кібернавчання НАТО для забезпечення безпеки транспорту</li>
+                    <li>Ризики кібер-шпигунства в глобальних транспортних мережах</li>
+                </ul>
+    
+                <h3>📌 Бізнес перспектива</h3>
+                <ul>
+                    <li>Проблеми конфіденційності у смарт-містах та інтелектуальних системах керування рухом</li>
+                    <li>GDPR та захист даних у європейській смарт-мобільності</li>
+                    <li>Як компанії забезпечують відповідність вимогам кібербезпеки</li>
+                </ul>
+    
+                <h3>📌 Практичні приклади</h3>
+                <ul>
+                    <li>Як НАТО захищає дані в безпечних військових конвоях</li>
+                    <li>Як GDPR впливає на Uber, авіакомпанії та постачальників смарт-мобільності</li>
+                </ul>
+            </section>
+    
+            <!-- Інтелектуальні агенти для аналізу кіберзагроз -->
+            <section id="intelligent-agents">
+                <h2>4️⃣ Інтелектуальні агенти для аналізу кіберзагроз</h2>
+    
+                <h3>📌 Військова та політична перспектива</h3>
+                <ul>
+                    <li>AI для виявлення кіберзагроз у військовому транспорті (БПЛА, конвої)</li>
+                    <li>ЄС та НАТО використовують AI для рішення проблем кібербезпеки</li>
+                    <li>Як AI допомагає виявляти кібернапади на смарт-дороги та залізниці</li>
+                </ul>
+    
+                <h3>📌 Бізнес перспектива</h3>
+                <ul>
+                    <li>AI-системи безпеки для корпоративних транспортних мереж</li>
+                    <li>Як компанії використовують машинне навчання для запобігання шахрайству та кіберзагрозам</li>
+                    <li>Моніторинг в реальному часі за допомогою AI на логістичних хабах та автономних транспортних засобах</li>
+                </ul>
+    
+                <h3>📌 Практичні приклади</h3>
+                <ul>
+                    <li>Як AI виявляє кіберзагрози у військових ланцюгах постачання</li>
+                    <li>AI-системи безпеки в ЄС для смарт-транспорту</li>
+                    <li>AI у корпоративній кібербезпеці – кейс DHL, Maersk, Tesla</li>
+                </ul>
+            </section>
+
+    
+        <section id="map" style="height: 500px; width: 100%;"></section>
+    
+        <footer>
+            <p>&copy; 2025 Cybersecurity in Smart Transportation. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@9.1.0/dist/vis-network.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.0/mapbox-gl.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

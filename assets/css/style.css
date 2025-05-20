@@ -1,0 +1,193 @@
+/* Загальні стилі для сайту */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Основний заголовок */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Основні стилі для контейнера тем */
+.topics-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    gap: 50px;
+    flex-wrap: wrap;
+    position: relative;
+    height: 400px; /* Фіксована висота контейнера */
+}
+
+/* Стиль кожного блоку з темою */
+.topic {
+    text-align: center;
+    width: 200px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Кулька з темою */
+.circle {
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 50%;
+    font-size: 2rem;
+    line-height: 100px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+/* Назва теми всередині кульки */
+.topic-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+.circle:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+.subtopics {
+    margin-top: 10px;
+}
+
+.subtopic {
+    cursor: pointer;
+    color: #3498db;
+    font-size: 1rem;
+    margin: 5px 0;
+    transition: color 0.3s ease;
+}
+
+
+.subtopic:hover {
+    color: #1abc9c;
+}
+
+.topic:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+section {
+    margin: 50px 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    color: #333;
+}
+
+section p {
+    color: #555;
+}
+
+
+/* Стилі для контейнера мережі */
+.network-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 600px;
+    margin-top: 50px;
+}
+
+/* Стилі для кульок */
+.circle {
+    background-color: #3498db;
+    color: white;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+/* Розташування кульок у вигляді мережі */
+#topic1 {
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#topic2 {
+    top: 50%;
+    left: 15%;
+}
+
+#topic3 {
+    top: 50%;
+    left: 85%;
+}
+
+#topic4 {
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Лінії між кульками */
+.connector-line {
+    position: absolute;
+    width: 2px;
+    background-color: #3498db;
+    height: 100px;
+    transform-origin: top;
+    transition: height 1s ease-in-out;
+}
+
+.circle:hover {
+    transform: scale(1.2);
+}
+
+.subtopics {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+.subtopic {
+    cursor: pointer;
+    color: #3498db;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+.subtopic:hover {
+    color: #1abc9c;
+}
+
+#graph-container {
+    border: 1px solid #ddd;
+    margin: 50px auto;
+    width: 80%;
+}
